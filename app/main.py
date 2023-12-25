@@ -21,6 +21,12 @@ def doRun(name_file: str, actions):
         filtered = find(name=column, actions=actions)
         if len(filtered) == 1:
             print(filtered[0].name)
+            data = csv_data.loc[:,column]
+            print(data)
+            data2 = list(filter(lambda i: not pd.isnull(i), data))
+            print(data2)
+            print(sum(filter(lambda i: isinstance(i, float), data)))
+            # TODO:  remplace all null with avg
 
 
 if __name__ == "__main__":
