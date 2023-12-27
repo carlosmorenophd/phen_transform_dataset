@@ -20,8 +20,6 @@ class NormalizeEnum(Enum):
     PASS = 0
     ONE_TO_ONE = 1
     ONE_POSITIVE = 2
-    THREE_TO_THREE = 3
-    THREE_POSITIVE = 4
 
 
 class Normalize():
@@ -36,15 +34,31 @@ class TransformNormalize:
         self.normalize = normalize
 
 
+def transform_N_T_S_M_V(x):
+    if x.upper() == "NONE":
+        return 0
+    elif x.upper() == "TRACES":
+        return 1
+    elif  x.upper() == "SLIGHT":
+        return 2
+    elif  x.upper() == "MODERATE":
+        return 3
+    elif  x.upper() == "SEVERE":
+        return 4
+
+
+
 class Preprocessing ():
     def __init__(self, save_file: str, name_file: str, actions: list[TransformNormalize]) -> None:
         self.save_file = save_file
-        self.actions: actions
+        self.actions = actions
         self.csv = pd.read_csv(name_file)
         self.csv_process = pd.DataFrame()
 
     def transform(self):
-        # Transform data
+        import re
+        """ Apply the all transformation on actions
+        """
         for action in self.actions:
             enum = action.transform.transformEnum
             column = action.column
@@ -59,7 +73,13 @@ class Preprocessing ():
                 self.csv_process[column] = self.csv[column].fillna('NORMAL')
             elif enum == TransformEnum.PASS:
                 self.csv_process[column] = self.csv[column]
+            elif enum == TransformEnum.FORCE_ONE:
+                self.csv_process[column] = self.csv[column].apply(
+                    lambda item: 1)
             # TODO: create a new function to put a date according the avg between the snow date
+            x = re.search("(N/T/S/M/V)", column)
+            if x:
+                self.csv_process[column] = self.csv_process[column].apply(transform_N_T_S_M_V);
 
     def normalize(self):
         # Normalize data
@@ -71,29 +91,30 @@ class Preprocessing ():
             elif enum == NormalizeEnum.ONE_POSITIVE:
                 max = self.csv_process[column].max()
                 min = self.csv_process[column].min()
-                self.csv_process[column] = self.csv_process[column].map(lambda item: ((item - min) / (max - min)))
+                self.csv_process[column] = self.csv_process[column].map(
+                    lambda item: ((item - min) / (max - min)))
+            elif enum == NormalizeEnum.ONE_TO_ONE:
+                max = self.csv_process[column].max()
+                min = self.csv_process[column].min()
+                self.csv_process[column] = self.csv_process[column].map(
+                    lambda item: ((1-(-1))((item - min) / (max - min))) - 1) 
 
-    def save(self, is_save_origin: bool = True, is_index: bool = False):
+    def save(self, is_save_origin: bool = False, is_index: bool = False):
         from os import path, remove
         if path.exists(self.save_file):
             remove(self.save_file)
-        self.csv_process(self.save_file, index=is_index)
+        self.csv_process.to_csv(self.save_file, index=is_index)
         if is_save_origin:
-            self.csv("origin_{0}"self.save_file, index=is_index)
-
+            self.csv.to_csv("origin_{0}".format(
+                self.save_file), index=is_index)
 
 
 def doRun(save_file: str, name_file: str, actions: list[TransformNormalize]):
-    preprocessing=Preprocessing(name_file=name_file, save_file=save_file, actions=actions)
+    preprocessing = Preprocessing(
+        name_file=name_file, save_file=save_file, actions=actions)
     preprocessing.transform()
     preprocessing.normalize()
     preprocessing.save()
-    
-    
-
-
-def save(pd, name: str, index: bool = False) -> None:
-    
 
 
 if __name__ == "__main__":
@@ -102,13 +123,13 @@ if __name__ == "__main__":
         TransformNormalize(
             column="GRAIN_YIELD:(t/ha):avg",
             transform=Transform(transformEnum=TransformEnum.PASS),
-            normalize=Normalize(normalizeEnum=NormalizeEnum.THREE_POSITIVE),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE),
         )
     )
     actions.append(
         TransformNormalize(
             column='SOWING_DATE:(date)',
-            transform=Transform(transformEnum=TransformEnum.PASS),
+            transform=Transform(transformEnum=TransformEnum.FORCE_ONE),
             normalize=Normalize(normalizeEnum=NormalizeEnum.PASS),
         )
     )
@@ -116,21 +137,21 @@ if __name__ == "__main__":
         TransformNormalize(
             column='AREA_HARVESTED_BED_PLOT_M2:(m2)',
             transform=Transform(transformEnum=TransformEnum.FILL_AVG),
-            normalize=Normalize(normalizeEnum=NormalizeEnum.PASS),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE),
         )
     )
     actions.append(
         TransformNormalize(
             column='AREA_SOWN_BED_PLOT_M2:(m2)',
             transform=Transform(TransformEnum.FILL_AVG),
-            normalize=Normalize(normalizeEnum=NormalizeEnum.PASS)
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
         )
     )
     actions.append(
         TransformNormalize(
             column='BIRD_DAMAGE:(N/T/S/M/V)',
             transform=Transform(TransformEnum.STR_NONE),
-            normalize=Normalize(normalizeEnum=NormalizeEnum.PASS)
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
         )
     )
     actions.append(
