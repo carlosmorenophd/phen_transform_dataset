@@ -39,13 +39,12 @@ def transform_N_T_S_M_V(x):
         return 0
     elif x.upper() == "TRACES":
         return 1
-    elif  x.upper() == "SLIGHT":
+    elif x.upper() == "SLIGHT":
         return 2
-    elif  x.upper() == "MODERATE":
+    elif x.upper() == "MODERATE":
         return 3
-    elif  x.upper() == "SEVERE":
+    elif x.upper() == "SEVERE":
         return 4
-
 
 
 class Preprocessing ():
@@ -79,7 +78,8 @@ class Preprocessing ():
             # TODO: create a new function to put a date according the avg between the snow date
             x = re.search("(N/T/S/M/V)", column)
             if x:
-                self.csv_process[column] = self.csv_process[column].apply(transform_N_T_S_M_V);
+                self.csv_process[column] = self.csv_process[column].apply(
+                    transform_N_T_S_M_V)
 
     def normalize(self):
         # Normalize data
@@ -97,7 +97,10 @@ class Preprocessing ():
                 max = self.csv_process[column].max()
                 min = self.csv_process[column].min()
                 self.csv_process[column] = self.csv_process[column].map(
-                    lambda item: ((1-(-1))((item - min) / (max - min))) - 1) 
+                    lambda item: (
+                        (2 * ((item - min) / (max - min))) -1
+                    )
+                )
 
     def save(self, is_save_origin: bool = False, is_index: bool = False):
         from os import path, remove
@@ -151,7 +154,7 @@ if __name__ == "__main__":
         TransformNormalize(
             column='BIRD_DAMAGE:(N/T/S/M/V)',
             transform=Transform(TransformEnum.STR_NONE),
-            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
         )
     )
     actions.append(
