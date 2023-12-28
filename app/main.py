@@ -105,7 +105,7 @@ class Preprocessing ():
                     calculate_avg(column_data=self.csv_process[column])
                 )
             elif enum == TransformEnum.FILL_CERO:
-                self.csv_process[column] = self.csv_process[column].fillna(0)
+                self.csv_process[column] = self.csv[column].fillna(0)
             x = re.search("(N/T/S/M/V)", column)
             if x:
                 self.csv_process[column] = self.csv_process[column].apply(
@@ -233,30 +233,19 @@ if __name__ == "__main__":
     )
     actions.append(
         TransformNormalize(
-            column='FERTILIZER_%N_2:(%)',
-            transform=Transform(TransformEnum.FILL_CERO),
-            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
-        )
-    )
-    actions.append(
-        TransformNormalize(
-            column='FERTILIZER_%N_3:(%)',
-            transform=Transform(TransformEnum.FILL_CERO),
-            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
-        )
-    )
-    actions.append(
-        TransformNormalize(
             column='FERTILIZER_%P2O5_1:(%)',
             transform=Transform(TransformEnum.FILL_CERO),
             normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
         )
     )
-    
-    
-
-
-    
+    actions.append(
+        TransformNormalize(
+            column='FERTILIZER_1:(date)',
+            transform=Transform(TransformEnum.DATE_FROM,
+                                column_base="SOWING_DATE:(date)"),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.PASS)
+        )
+    )
 
     doRun(
         save_file='test.csv',
