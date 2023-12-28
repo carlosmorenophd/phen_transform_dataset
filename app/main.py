@@ -10,6 +10,8 @@ class TransformEnum(Enum):
     FORCE_ONE = 4
     DATE_FROM = 5
     FILL_CERO = 6
+    STR_NO = 7
+    STR_UNKNOWN = 8
 
 
 class Transform():
@@ -57,6 +59,20 @@ def transform_E_N_L(x):
     elif x.upper() == "LATE":
         return 2
 
+
+def transform_Y_N(x):
+    if x.upper() == "YES":
+        return 1
+    elif x.upper() == "NO":
+        return 0
+
+def transform_Y_N_U(x):
+    if x.upper() == "YES":
+        return 1
+    elif x.upper() == "NO":
+        return -1
+    elif x.upper() == "UNKNOWN":
+        return 0
 
 def calculate_avg(column_data) -> float:
     elements = list(
@@ -106,16 +122,31 @@ class Preprocessing ():
                 )
             elif enum == TransformEnum.FILL_CERO:
                 self.csv_process[column] = self.csv[column].fillna(0)
-            x = re.search("(N/T/S/M/V)", column)
-            if x:
+            elif enum == TransformEnum.STR_NO:
+                self.csv_process[column] = self.csv[column].fillna('NO')
+            elif enum == TransformEnum.STR_UNKNOWN:
+                print(self.csv[column])
+                self.csv_process[column] = self.csv[column].fillna('UNKNOWN')
+                print(self.csv_process[column])
+
+            if re.search("(N/T/S/M/V)", column):
                 self.csv_process[column] = self.csv_process[column].apply(
                     transform_N_T_S_M_V
                 )
-            x = re.search("(E/N/L)", column)
-            if x:
+            if re.search("(E/N/L)", column):
                 self.csv_process[column] = self.csv_process[column].apply(
                     transform_E_N_L
                 )
+            if re.search("(Y/N)", column):
+                self.csv_process[column] = self.csv_process[column].apply(
+                    transform_Y_N
+                )
+            if re.search("(Y/N/U)", column):
+                print(self.csv_process[column])
+                self.csv_process[column] = self.csv_process[column].apply(
+                    transform_Y_N_U
+                )
+
 
     def normalize(self):
         """ Normalize the data set
@@ -246,6 +277,252 @@ if __name__ == "__main__":
             normalize=Normalize(normalizeEnum=NormalizeEnum.PASS)
         )
     )
+    actions.append(
+        TransformNormalize(
+            column='FOLIAR_DISEASE_DEVELOPMENT:(N/T/S/M/V)',
+            transform=Transform(TransformEnum.STR_NONE),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='FROST_DAMAGE_SPIKE:(N/T/S/M/V)',
+            transform=Transform(TransformEnum.STR_NONE),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='HAIL_DAMAGE:(N/T/S/M/V)',
+            transform=Transform(TransformEnum.STR_NONE),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='HERBICIDE_DAMAGE:(N/T/S/M/V)',
+            transform=Transform(TransformEnum.STR_NONE),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='HERBICIDE:(Y/N)',
+            transform=Transform(TransformEnum.STR_NO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='IRRIGATED:(Y/N)',
+            transform=Transform(TransformEnum.STR_NO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='INSECT_DAMAGE:(N/T/S/M/V)',
+            transform=Transform(TransformEnum.STR_NONE),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='LODGING:(N/T/S/M/V)',
+            transform=Transform(TransformEnum.STR_NONE),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='LODGING:(N/T/S/M/V)',
+            transform=Transform(TransformEnum.STR_NONE),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='NO_OF_ROWS_HARVESTED:(integer)',
+            transform=Transform(TransformEnum.FILL_AVG),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='NO_OF_ROWS_SOWN:(integer)',
+            transform=Transform(TransformEnum.FILL_AVG),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='NUMBER_POST_SOWING_IRRIGATIONS:(integer)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='NUMBER_PRE_SOWING_IRRIGATIONS:(integer)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PPN_MONTH_OF_HARVESTED:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PPN_1ST_MO_BEFORE_HARVESTED:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PPN_2ND_MO_BEFORE_HARVESTED:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PPN_3RD_MO_BEFORE_HARVESTED:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PPN_4TH_MO_BEFORE_HARVESTED:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PPN_6TH_MO_BEFORE_HARVESTED:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PPN_7TH_MO_BEFORE_HARVESTED:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PPN_8TH_MO_BEFORE_HARVESTED:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PPN_9TH_MO_BEFORE_HARVESTED:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PPN_10TH_MO_BEFORE_HARVESTED:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PPN_11TH_MO_BEFORE_HARVESTED:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PRE_SOWING_IRRIGATION:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='PRECIPITATION_FROM_SOWING_TO_MATURITY:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='ROOT_DISEASE_DEVELOPMENT:(N/T/S/M/V)',
+            transform=Transform(TransformEnum.STR_NONE),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='SOIL_ALUMINIUM_TOXICITY:(Y/N)',
+            transform=Transform(TransformEnum.STR_NO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='SPIKE_DISEASE_DEVELOPMENT:(N/T/S/M/V)',
+            transform=Transform(TransformEnum.STR_NONE),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='TOTAL_PRECIPIT_IN_12_MONTHS:(mm)',
+            transform=Transform(TransformEnum.FILL_AVG),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='WEED_PROBLEM:(N/T/S/M/V)',
+            transform=Transform(TransformEnum.STR_NONE),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='YIELD_FACTOR:(real)',
+            transform=Transform(TransformEnum.FILL_AVG),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='IRRIGATION_AFTER_SOWING:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
+            column='SOIL_ROOT_BARRIER:(Y/N/U)',
+            transform=Transform(TransformEnum.STR_UNKNOWN),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+
+
+	
+
+
+    	
+
+
 
     doRun(
         save_file='test.csv',
