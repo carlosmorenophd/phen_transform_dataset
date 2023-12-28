@@ -127,19 +127,19 @@ class Preprocessing ():
             elif enum == TransformEnum.STR_UNKNOWN:
                 self.csv_process[column] = self.csv[column].fillna('UNKNOWN')
 
-            if re.search("(N/T/S/M/V)", column):
+            if re.search("\(N/T/S/M/V\)$", column):
                 self.csv_process[column] = self.csv_process[column].apply(
                     transform_N_T_S_M_V
                 )
-            elif re.search("(E/N/L)", column):
+            elif re.search("\(E/N/L\)$", column):
                 self.csv_process[column] = self.csv_process[column].apply(
                     transform_E_N_L
                 )
-            elif re.search("(Y/N/U)", column):
+            elif re.search("\(Y/N/U\)$", column):
                 self.csv_process[column] = self.csv_process[column].apply(
                     transform_Y_N_U
                 )
-            elif re.search("(Y/N)", column):
+            elif re.search("\(Y/N\)$", column):
                 self.csv_process[column] = self.csv_process[column].apply(
                     transform_Y_N
                 )
