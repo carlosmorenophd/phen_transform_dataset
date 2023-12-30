@@ -403,6 +403,13 @@ if __name__ == "__main__":
     )
     actions.append(
         TransformNormalize(
+            column='PPN_5TH_MO_BEFORE_HARVESTED:(mm)',
+            transform=Transform(TransformEnum.FILL_CERO),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        )
+    )
+    actions.append(
+        TransformNormalize(
             column='PPN_6TH_MO_BEFORE_HARVESTED:(mm)',
             transform=Transform(TransformEnum.FILL_CERO),
             normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
