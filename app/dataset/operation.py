@@ -8,6 +8,7 @@ from dataset.transform import (
 )
 from dataset.normalize import Normalize, NormalizeEnum
 from dataset.util import calculate_avg
+from dataset.valid.row import RowValid, RowValidEnum
 import pandas as pd
 
 
@@ -19,13 +20,27 @@ class TransformNormalize:
 
 
 class Preprocessing ():
-    def __init__(self, save_file: str, name_file: str, actions: list[TransformNormalize]) -> None:
+    def __init__(
+        self,
+        save_file: str,
+        name_file: str,
+        actions: list[TransformNormalize],
+        remove_rows: list[RowValid]
+    ) -> None:
         self.save_file = save_file
         self.actions = actions
         self.csv = pd.read_csv(name_file)
         self.csv_process = pd.DataFrame()
+        self.remove_rows = remove_rows
 
-    def transform(self):
+    def validate_rows(self) -> None:
+        for remove_row in self.remove_rows:
+            enum = remove_row.valid
+            column = remove_row.column
+            if enum == RowValidEnum.VALUE_OR_REMOVE:
+                self.csv = self.csv.dropna(subset=[column])
+
+    def transform(self) -> None:
         import re
         """ Apply the all transformation on actions
         """
@@ -81,7 +96,7 @@ class Preprocessing ():
                     transform_Y_N
                 )
 
-    def normalize(self):
+    def normalize(self) -> None:
         """ Normalize the data set
         """
         for action in self.actions:
@@ -109,5 +124,6 @@ class Preprocessing ():
             remove(self.save_file)
         self.csv_process.to_csv(self.save_file, index=is_index)
         if is_save_origin:
-            self.csv.to_csv("origin_{0}".format(
-                self.save_file), index=is_index)
+            print(self.csv)
+            new_name = "origin_{0}".format(self.save_file)
+            self.csv.to_csv(new_name, index=is_index)

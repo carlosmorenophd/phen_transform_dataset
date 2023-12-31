@@ -11,7 +11,7 @@ def doRun(save_file: str, name_file: str, actions: list[TransformNormalize], rem
         actions=actions,
         remove_rows=remove_rows,
     )
-    # TODO: implement the rule to remove the rows
+    preprocessing.validate_rows()
     preprocessing.transform()
     preprocessing.normalize()
     preprocessing.save()
@@ -258,13 +258,26 @@ if __name__ == "__main__":
             normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
         )
     ]
+	
 
-    remove_rows = [RowValid(column="GPS Altitude:(integer)",
-                            valid=RowValidEnum.VALUE_OR_REMOVE)]
+    remove_rows = [
+        RowValid(
+            column="GRAIN_YIELD:(t/ha):avg",
+            valid=RowValidEnum.VALUE_OR_REMOVE
+        ),
+        RowValid(
+            column="SOWING_DATE:(date)",
+            valid=RowValidEnum.VALUE_OR_REMOVE
+        ),
+        RowValid(
+            column="GPS Altitude:(integer)",
+            valid=RowValidEnum.VALUE_OR_REMOVE
+        ),
+    ]
 
     doRun(
         save_file='test.csv',
-        name_file='./origin_test.csv',
+        name_file='./dataset.csv',
         actions=actions,
         remove_rows=remove_rows,
     )
