@@ -1,3 +1,5 @@
 .venv/
 .~lock.*
-test.*
+*test.csv
+
+__pycache__
