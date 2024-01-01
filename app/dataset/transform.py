@@ -10,12 +10,23 @@ class TransformEnum(Enum):
     FILL_CERO = 6
     STR_NO = 7
     STR_UNKNOWN = 8
+    COORDINATE_DECIMAL = 9
 
 
 class Transform():
-    def __init__(self, transformEnum: TransformEnum, column_base: str = "") -> None:
+    def __init__(
+            self, 
+            transformEnum: TransformEnum, 
+            column_base: str = "", 
+            column_coordinate_degree: str = "",
+            column_coordinate_minute: str = "",
+            column_coordinate_NSEW: str = "",
+        ) -> None:
         self.transformEnum = transformEnum
         self.column_base = column_base
+        self.column_coordinate_minute = column_coordinate_minute
+        self.column_coordinate_NSEW = column_coordinate_NSEW
+        self.column_coordinate_degree = column_coordinate_degree
 
 
 def transform_N_T_S_M_V(x):
@@ -54,3 +65,13 @@ def transform_Y_N_U(x):
         return -1
     elif x.upper() == "UNKNOWN":
         return 0
+    
+def transform_N_S_W_E(x):
+    if x.upper() == "N":
+        return 1
+    elif x.upper() == "S":
+        return -1
+    elif x.upper() == "W":
+        return -1
+    elif x.upper() == "E":
+        return 1
