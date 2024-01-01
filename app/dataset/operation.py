@@ -5,6 +5,7 @@ from dataset.transform import (
     transform_E_N_L,
     transform_Y_N,
     transform_Y_N_U,
+    transform_N_S_W_E,
 )
 from dataset.normalize import Normalize, NormalizeEnum
 from dataset.util import calculate_avg
@@ -13,7 +14,12 @@ import pandas as pd
 
 
 class TransformNormalize:
-    def __init__(self, column: str, transform: Transform, normalize: Normalize) -> None:
+    def __init__(
+            self,
+            column: str,
+            transform: Transform,
+            normalize: Normalize
+    ) -> None:
         self.column = column
         self.transform = transform
         self.normalize = normalize
@@ -78,6 +84,11 @@ class Preprocessing ():
                 self.csv_process[column] = self.csv[column].fillna('NO')
             elif enum == TransformEnum.STR_UNKNOWN:
                 self.csv_process[column] = self.csv[column].fillna('UNKNOWN')
+            elif enum == TransformEnum.COORDINATE_DECIMAL:
+                degree = action.transform.column_coordinate_degree
+                minute = action.transform.column_coordinate_minute
+                n_s_e_w = action.transform.column_coordinate_NSEW
+                self.csv_process[column] = (self.csv[degree] + 1/60 * (self.csv[minute]) * self.csv[n_s_e_w].apply(transform_N_S_W_E) )
 
             if re.search("\(N/T/S/M/V\)$", column):
                 self.csv_process[column] = self.csv_process[column].apply(
@@ -124,6 +135,7 @@ class Preprocessing ():
             remove(self.save_file)
         self.csv_process.to_csv(self.save_file, index=is_index)
         if is_save_origin:
-            print(self.csv)
             new_name = "origin_{0}".format(self.save_file)
+            if path.exists(new_name):
+                remove(new_name)
             self.csv.to_csv(new_name, index=is_index)

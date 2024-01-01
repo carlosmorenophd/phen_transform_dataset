@@ -14,10 +14,29 @@ def doRun(save_file: str, name_file: str, actions: list[TransformNormalize], rem
     preprocessing.validate_rows()
     preprocessing.transform()
     preprocessing.normalize()
-    preprocessing.save()
+    preprocessing.save(is_index=False, is_save_origin=True)
 
 
 if __name__ == "__main__":
+    remove_rows = [
+        RowValid(
+            column="GRAIN_YIELD:(t/ha):avg",
+            valid=RowValidEnum.VALUE_OR_REMOVE
+        ),
+        RowValid(
+            column="SOWING_DATE:(date)",
+            valid=RowValidEnum.VALUE_OR_REMOVE
+        ),
+        RowValid(
+            column="GPS Latitude (N or S):(TEXT)",
+            valid=RowValidEnum.VALUE_OR_REMOVE
+        ),
+        RowValid(
+            column="GPS Longitude ( E or W):(TEXT)",
+            valid=RowValidEnum.VALUE_OR_REMOVE
+        ),
+    ]
+
     actions = [
         TransformNormalize(
             column="GRAIN_YIELD:(t/ha):avg",
@@ -256,22 +275,192 @@ if __name__ == "__main__":
             column='SOIL_ROOT_BARRIER:(Y/N/U)',
             transform=Transform(TransformEnum.STR_UNKNOWN),
             normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
-        )
-    ]
-	
-
-    remove_rows = [
-        RowValid(
-            column="GRAIN_YIELD:(t/ha):avg",
-            valid=RowValidEnum.VALUE_OR_REMOVE
         ),
-        RowValid(
-            column="SOWING_DATE:(date)",
-            valid=RowValidEnum.VALUE_OR_REMOVE
+        TransformNormalize(
+            column='GPS Altitude:(integer)',
+            transform=Transform(TransformEnum.PASS),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
         ),
-        RowValid(
-            column="GPS Altitude:(integer)",
-            valid=RowValidEnum.VALUE_OR_REMOVE
+        TransformNormalize(
+            column='GPS Latitude (Decimal)',
+            transform=Transform(
+                transformEnum=TransformEnum.COORDINATE_DECIMAL,
+                column_coordinate_degree="GPS Latitude (Degrees):(integer)",
+                column_coordinate_minute="GPS Latitude (Minutes):(integer)",
+                column_coordinate_NSEW="GPS Latitude (N or S):(TEXT)"
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='GPS Longitude (Decimal)',
+            transform=Transform(
+                transformEnum=TransformEnum.COORDINATE_DECIMAL,
+                column_coordinate_degree="GPS Longitude (Degress):(integer)",
+                column_coordinate_minute="GPS Longitude (Minutes):(integer)",
+                column_coordinate_NSEW="GPS Longitude ( E or W):(TEXT)"
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='SOIL_PERCENT_ORGANIC_MATTER:(%)',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='SOIL_DEPTH_OF_ROOT_ZONE:(cm)',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='FUNGICIDE:(Y/N)',
+            transform=Transform(
+                transformEnum=TransformEnum.STR_NO,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
+        ),
+        TransformNormalize(
+            column='PESTICIDE:(Y/N)',
+            transform=Transform(
+                transformEnum=TransformEnum.STR_NO,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_TO_ONE)
+        ),
+        TransformNormalize(
+            column='1000_GRAIN_WEIGHT:(g):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='ABOVE_GROUND_BIOMASS:(t/ha):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='AGRONOMIC_SCORE:(1-5):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='CANOPY_TEMPERATURE_DEPRESSION:(oC):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='CHLOROPHYLL:(integer):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='Canopy Temperature:(real):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='DAYS_TO_HEADING:(days):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='DAYS_TO_MATURITY:(days):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='EARLY_VIGOR:(1-5):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='GERMINATION_%:(%):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='GRAINS/SPIKE:(NO_GRAINS/SPIKE):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='GRAIN_PROTEIN:(%):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='PLANT_HEIGHT:(cm):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='SEDIMENTATION_INDEX:(%):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='SPIKELETS/SPIKE:(integer):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='SPIKE_LENGTH:(cm):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='SPIKES_M2:(ears/m2):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='TEST_WEIGHT:(kg/hl):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
+        ),
+        TransformNormalize(
+            column='Yellow color index (b-value):(real):avg',
+            transform=Transform(
+                transformEnum=TransformEnum.FILL_AVG,
+            ),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE)
         ),
     ]
 
