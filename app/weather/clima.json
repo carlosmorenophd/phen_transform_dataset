@@ -1,5 +1,6 @@
 {
   "url": "https://power.larc.nasa.gov/api/temporal/hourly/point?start=20090401&end=20090831&latitude=48.7167&longitude=8.7833&community=re&parameters=ALLSKY_SFC_SW_DWN%2CCLRSKY_SFC_SW_DWN%2CALLSKY_KT&format=json&user=DAV&header=true&time-standard=lst",
+  "example": "https://power.larc.nasa.gov/api/temporal/hourly/point?start=20090403&end=20090807&latitude=48.7166666666667&longitude=8.78333333333333&community=re&parameters=ALLSKY_SFC_SW_DWN&format=json&user=test&header=true&time-standard=lst",
   "parameters": {
     "ALLSKY_SFC_SW_DWN": {
       "units": "kW-hr/m^2/day",
