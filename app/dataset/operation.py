@@ -88,7 +88,12 @@ class Preprocessing ():
                 degree = action.transform.column_coordinate_degree
                 minute = action.transform.column_coordinate_minute
                 n_s_e_w = action.transform.column_coordinate_NSEW
-                self.csv_process[column] = (self.csv[degree] + 1/60 * (self.csv[minute]) * self.csv[n_s_e_w].apply(transform_N_S_W_E) )
+                self.csv_process[column] = (
+                    self.csv[degree] + 1/60 * (self.csv[minute]) * self.csv[n_s_e_w].apply(transform_N_S_W_E))
+                self.csv_process[column] = self.csv_process[column].apply(
+                    lambda x: 180 if x > 180 else x)
+                self.csv_process[column] = self.csv_process[column].apply(
+                    lambda x: -180 if x< -180 else x)
 
             if re.search("\(N/T/S/M/V\)$", column):
                 self.csv_process[column] = self.csv_process[column].apply(
