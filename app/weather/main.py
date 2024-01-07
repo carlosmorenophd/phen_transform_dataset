@@ -3,8 +3,6 @@ import pandas as pd
 import requests_cache
 
 
-
-
 class FormatEnum(Enum):
     JSON = "json"
 
