@@ -1,6 +1,11 @@
 from enum import Enum
 import pandas as pd
 import requests_cache
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 6daef3d (Fixing the latitud error)
 
 
 class FormatEnum(Enum):
