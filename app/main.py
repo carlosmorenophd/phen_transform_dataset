@@ -485,6 +485,14 @@ if __name__ == "__main__":
             normalize=Normalize(normalizeEnum=NormalizeEnum.PASS)
         ),
         TransformNormalize(
+<<<<<<< HEAD
+=======
+            column='EMERGENCE_DATE:(date)',
+            transform=Transform(TransformEnum.PASS),
+            normalize=Normalize(normalizeEnum=NormalizeEnum.PASS)
+        ),
+        TransformNormalize(
+>>>>>>> 94b84ca (Adding requirenments)
             column='GPS Altitude:(integer)',
             transform=Transform(TransformEnum.PASS),
             normalize=Normalize(normalizeEnum=NormalizeEnum.PASS)
