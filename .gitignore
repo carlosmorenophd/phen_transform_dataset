@@ -1,5 +1,6 @@
 .venv/
 .~lock.*
 *test.csv
-
-__pycache__
+*_cache.sqlite
+__pycache__/
+test_*

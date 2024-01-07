@@ -11,6 +11,7 @@ class TransformEnum(Enum):
     STR_NO = 7
     STR_UNKNOWN = 8
     COORDINATE_DECIMAL = 9
+    COORDINATE_DECIMAL_LIMIT_180 = 10
 
 
 class Transform():
