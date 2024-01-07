@@ -1,7 +1,13 @@
 {
     "cSpell.ignoreWords": [
         "ALLSKY",
+        "ALUMINIUM",
+        "CLRSKY",
         "Degress",
+        "MDEW",
+        "MWET",
+        "PRECIPIT",
+        "PRECTOTCORR",
         "fillna",
         "iloc",
         "iterrows"
