@@ -28,6 +28,10 @@ if __name__ == "__main__":
             valid=RowValidEnum.VALUE_OR_REMOVE
         ),
         RowValid(
+            column="HARVEST_STARTING_DATE:(date)",
+            valid=RowValidEnum.VALUE_OR_REMOVE
+        ),
+        RowValid(
             column="GPS Latitude (N or S):(TEXT)",
             valid=RowValidEnum.VALUE_OR_REMOVE
         ),
@@ -477,11 +481,6 @@ if __name__ == "__main__":
         ),
         TransformNormalize(
             column='HARVEST_STARTING_DATE:(date)',
-            transform=Transform(TransformEnum.PASS),
-            normalize=Normalize(normalizeEnum=NormalizeEnum.PASS)
-        ),
-        TransformNormalize(
-            column='EMERGENCE_DATE:(date)',
             transform=Transform(TransformEnum.PASS),
             normalize=Normalize(normalizeEnum=NormalizeEnum.PASS)
         ),

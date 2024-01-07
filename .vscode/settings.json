@@ -1,8 +1,10 @@
 {
     "cSpell.ignoreWords": [
         "ALLSKY",
+        "Degress",
         "fillna",
-        "iloc"
+        "iloc",
+        "iterrows"
     ],
     "cSpell.words": [
         "dropna"
