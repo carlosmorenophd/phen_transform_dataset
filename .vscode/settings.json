@@ -8,6 +8,7 @@
         "MWET",
         "PRECIPIT",
         "PRECTOTCORR",
+        "Phen",
         "fillna",
         "iloc",
         "iterrows"
