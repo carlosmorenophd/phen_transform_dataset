@@ -2,6 +2,7 @@ from dataset.operation import TransformNormalize, Preprocessing
 from dataset.transform import Transform, TransformEnum
 from dataset.normalize import Normalize, NormalizeEnum
 from dataset.valid.row import RowValid, RowValidEnum
+from rabbitmq.send_message import send
 
 
 def doRun(save_file: str, name_file: str, actions: list[TransformNormalize], remove_rows: list[RowValid]):
@@ -16,8 +17,10 @@ def doRun(save_file: str, name_file: str, actions: list[TransformNormalize], rem
     preprocessing.normalize()
     preprocessing.save(is_index=False, is_save_origin=True)
 
-
 if __name__ == "__main__":
+    send()
+
+if __name__ == "__main2__":
     remove_rows = [
         RowValid(
             column="GRAIN_YIELD:(t/ha):avg",

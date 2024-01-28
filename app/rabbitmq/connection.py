@@ -1,6 +1,7 @@
 import pika
 import sys
 import os
+import jsonpickle
 
 
 def main():
@@ -19,6 +20,7 @@ def main():
 
     def callback(ch, method, properties, body):
         print(f" [x] Received {body}")
+        print(f" Convert to class {jsonpickle.decode(body)}")
 
     channel.basic_consume(
         queue='hello', on_message_callback=callback, auto_ack=True)
