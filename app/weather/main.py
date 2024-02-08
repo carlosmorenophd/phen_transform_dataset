@@ -13,6 +13,7 @@ class CommunityEnum(Enum):
 
 class OperationEnum(Enum):
     AVG_ALL = 1
+    CREATE_FILE = 2
 
 
 class ParameterEnum(Enum):
@@ -88,17 +89,28 @@ def do_run(
             if operation == OperationEnum.AVG_ALL:
                 avg = sum(result[param].values()) / float(len(result[param]))
                 csv.at[index, param] = avg
+            elif operation == OperationEnum.CREATE_FILE:
+                from pandas import DataFrame
+                data_to_save=result[param]
+                print(type(data_to_save))
+                pandas = DataFrame(data_to_save, index=[0])
+                pandas.to_csv(save_file.replace('.', '{}_{}.'.format(row["country"], param)), index=False)
+                
     csv.to_csv(save_file, index=True)
 
 
 if __name__ == "__main__":
-    name_file = "dataset_wheat.csv"
+    name_file = "app/files/toGraphicWheat.csv"
     latitude_column = "GPS Latitude (Decimal)"
     longitude_column = "GPS Longitude (Decimal)"
     start_date_column = "SOWING_DATE:(date)"
     end_date_column = "HARVEST_STARTING_DATE:(date)"
-    parameters = [ParameterEnum.ALLSKY_SFC_SW_DWN,
-                  ParameterEnum.CLRSKY_SFC_SW_DWN]
+    parameters = [
+        ParameterEnum.RH2M,
+        ParameterEnum.PRECTOTCORR,
+        ParameterEnum.TS,
+        ParameterEnum.PS,
+    ]
     save_file = "test_wheat.csv"
     do_run(
         name_file=name_file,
@@ -108,4 +120,5 @@ if __name__ == "__main__":
         end_date_column=end_date_column,
         parameters=parameters,
         save_file=save_file,
+        operation=OperationEnum.CREATE_FILE,
     )
