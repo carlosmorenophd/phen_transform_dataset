@@ -60,7 +60,5 @@ class WeatherLoop:
             if response.status_code == 200:
                 result = response.json()["properties"]["parameter"]
                 for key in result[parameter.value]:
-                    df.loc[len(df.index)] = [key, result[parameter.value][key]]  
-                    
-                
+                    df.loc[len(df.index)] = [key, result[parameter.value][key]]                  
         return df

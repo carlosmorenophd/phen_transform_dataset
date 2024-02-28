@@ -49,6 +49,71 @@ class ParameterEnum(Enum):
     WD50M = "WD50M"
 
 
+def paramter_enum_to_text(param: ParameterEnum) -> str:
+    if param == ParameterEnum.ALLSKY_SFC_SW_DWN:
+        return "radiacion_total"
+    elif param == ParameterEnum.CLRSKY_SFC_SW_DWN:
+        return "radiacion_alncaza_superficie"
+    elif param == ParameterEnum.ALLSKY_KT:
+        return "radiacion_sin_nubes"
+    elif param == ParameterEnum.ALLSKY_SFC_LW_DWN:
+        return "total_radiacion_onda_larga"
+    elif param == ParameterEnum.ALLSKY_SFC_PAR_TOT:
+        return "total_radiacion_fotosimetica"
+    elif param == ParameterEnum.CLRSKY_SFC_PAR_TOT:
+        return "radiacion_fotosimetica"
+    elif param == ParameterEnum.ALLSKY_SFC_UVA:
+        return "uva"
+    elif param == ParameterEnum.ALLSKY_SFC_UVB:
+        return "uvb"
+    elif param == ParameterEnum.ALLSKY_SFC_UV_INDEX:
+        return "dencidad_radiacion"
+    elif param == ParameterEnum.T2M:
+        return "temperatura_2"
+    elif param == ParameterEnum.T2MDEW:
+        return "punto_congelacion_2"
+    elif param == ParameterEnum.T2MWET:
+        return "temperatura_bulbo_humedo_2"
+    elif param == ParameterEnum.TS:
+        return "temperatura_piel_tierra"
+    elif param == ParameterEnum.T2M_RANGE:
+        return "temperatura_range_2"
+    elif param == ParameterEnum.T2M_MAX:
+        return "temperatura_max_2"
+    elif param == ParameterEnum.T2M_MIN:
+        return "temperatura_min_2"
+    elif param == ParameterEnum.QV2M:
+        return "humedad_espeficica_2"
+    elif param == ParameterEnum.RH2M:
+        return "humedad_realtiva_2"
+    elif param == ParameterEnum.PRECTOTCORR:
+        return "precipitacion_pluvial"
+    elif param == ParameterEnum.PS:
+        return "presion_atmosferica"
+    elif param == ParameterEnum.WS10M:
+        return "velocidad_viento_10"
+    elif param == ParameterEnum.WS10M_MAX:
+        return "velocidad_viento_max_10"
+    elif param == ParameterEnum.WS10M_MIN:
+        return "velocidad_viento_min_10"
+    elif param == ParameterEnum.WS10M_RANGE:
+        return "velocidad_viento_rango_10"
+    elif param == ParameterEnum.WD10M:
+        return "direccion_viento_10"
+    elif param == ParameterEnum.WS50M:
+        return "velocidad_viento_50"
+    elif param == ParameterEnum.WS50M_MAX:
+        return "velocidad_viento_max_50"
+    elif param == ParameterEnum.WS50M_MIN:
+        return "velocidad_viento_min_50"
+    elif param == ParameterEnum.WS50M_RANGE:
+        return "velocidad_viento_rango_50"
+    elif param == ParameterEnum.WD50M:
+        return "direccion_viento_50"
+    else:
+        return ""
+
+
 def do_run(
     name_file: str,
     latitude_column: str,
@@ -91,11 +156,12 @@ def do_run(
                 csv.at[index, param] = avg
             elif operation == OperationEnum.CREATE_FILE:
                 from pandas import DataFrame
-                data_to_save=result[param]
+                data_to_save = result[param]
                 print(type(data_to_save))
                 pandas = DataFrame(data_to_save, index=[0])
-                pandas.to_csv(save_file.replace('.', '{}_{}.'.format(row["country"], param)), index=False)
-                
+                pandas.to_csv(save_file.replace(
+                    '.', '{}_{}.'.format(row["country"], param)), index=False)
+
     csv.to_csv(save_file, index=True)
 
 
