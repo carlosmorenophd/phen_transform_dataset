@@ -11,14 +11,7 @@ def get_mexico():
         latitude=27.483333333333334,
         longitude=-109.9833333,
     )
-    start = date(year=2001, month=1, day=1)
-    end = date(year=2021, month=12, day=31)
-    folder = "result_test{}_{}".format(start.year, end.year)
-    if not os.path.isdir(folder):
-        os.mkdir(folder)
-
-    loop = WeatherLoop(
-        url="https://power.larc.nasa.gov/api/temporal/hourly/point")
+    years = [2020]
     list = [
         ParameterEnum.ALLSKY_SFC_SW_DWN,
         ParameterEnum.CLRSKY_SFC_SW_DWN,
@@ -52,23 +45,55 @@ def get_mexico():
         ParameterEnum.WD50M,
     ]
 
-    for param in list:
-        print("Start with {}".format(param.value))
-        df = loop.get_all_data(
-            gps=mexico,
-            start_date=start,
-            end_date=end,
-            parameter=param,
-        )
-        param_text = paramter_enum_to_text(param)
-        df.to_csv("{}/{}_{}_{}.csv".format(folder, param_text, start.year, end.year), index=False)
-        plt.ioff()
-        fig = plt.figure(figsize=(50, 50))
+    periods = ['hourly']
+    for period in periods:
+        for end_year in years:
+            start = date(year=2001, month=1, day=1)
+            end = date(year=end_year, month=12, day=31)
+            folder = "result_test_{}_{}_{}".format(
+                period, start.year, end.year
+            )
+            if not os.path.isdir(folder):
+                os.mkdir(folder)
+            loop = WeatherLoop(
+                url="https://power.larc.nasa.gov/api/temporal/{}/point".format(
+                    period)
+            )
+            for param in list:
+                print("Start with {}".format(param.value))
+                df = loop.get_all_data(
+                    gps=mexico,
+                    start_date=start,
+                    end_date=end,
+                    parameter=param,
+                )
+                param_text = paramter_enum_to_text(param)
+                df.to_csv(
+                    "{}/{}_{}_{}_{}.csv".format(
+                        folder,
+                        param_text,
+                        start.year,
+                        end.year,
+                        mexico.name,
+                    ),
+                    index=False,
+                )
+                plt.ioff()
+                fig = plt.figure(figsize=(50, 50))
 
-        plt.plot(df["time"], df[param.value])
-        # plt.show()
-        plt.title('Grafica de {} {} {} {}'.format(param_text, mexico.name, start.year, end.year))
+                plt.plot(df["time"], df[param.value])
+                # plt.show()
+                plt.title('Grafica de {} {} {} {}'.format(
+                    param_text, mexico.name, start.year, end.year))
 
-        plt.savefig("{}/{}_{}.jpg".format(folder, param_text, mexico.name))
-        plt.close(fig)
-        print("Finsh with {}".format(param.value))
+                plt.savefig(
+                    "{}/{}_{}_{}_{}.csv".format(
+                        folder,
+                        param_text,
+                        start.year,
+                        end.year,
+                        mexico.name,
+                    ),
+                )
+                plt.close(fig)
+                print("Finsh with {}".format(param.value))

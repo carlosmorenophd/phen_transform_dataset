@@ -9,6 +9,6 @@ test_*
 
 venv/
 
-output.log
+output*.log
 
 *_test*/
