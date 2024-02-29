@@ -1,0 +1,2 @@
+﻿GRAIN_YIELD:(t/ha):avg,country,SOWING_DATE:(date),HARVEST_STARTING_DATE:(date),GPS Altitude:(integer),GPS Latitude (Decimal),GPS Longitude (Decimal)
+4.6355,MEXICO,Dec  7 2005,Dec 31 2006,38,27.483333333333334,-109.9833333

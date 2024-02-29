@@ -8,9 +8,14 @@
         "MWET",
         "PRECIPIT",
         "PRECTOTCORR",
+        "Phen",
+        "RABBITMQ",
+        "envfile",
+        "envparse",
         "fillna",
         "iloc",
-        "iterrows"
+        "iterrows",
+        "jsonpickle"
     ],
     "cSpell.words": [
         "dropna"
