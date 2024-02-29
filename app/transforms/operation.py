@@ -1,4 +1,4 @@
-from dataset.transform import (
+from transforms.transform import (
     Transform,
     TransformEnum,
     transform_N_T_S_M_V,
@@ -7,9 +7,8 @@ from dataset.transform import (
     transform_Y_N_U,
     transform_N_S_W_E,
 )
-from dataset.normalize import Normalize, NormalizeEnum
-from dataset.util import calculate_avg
-from dataset.valid.row import RowValid, RowValidEnum
+from transforms.normalize import Normalize, NormalizeEnum
+from transforms.valid.row import RowValid, RowValidEnum
 import pandas as pd
 
 
@@ -150,3 +149,10 @@ class Preprocessing ():
             if path.exists(new_name):
                 remove(new_name)
             self.csv.to_csv(new_name, index=is_index)
+
+
+def calculate_avg(column_data) -> float:
+    elements = list(
+        filter(lambda i: not pd.isnull(i), column_data)
+    )
+    return sum(elements) / len(elements)

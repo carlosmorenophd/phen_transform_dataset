@@ -1,5 +1,5 @@
-from dataset.operation import TransformNormalize
-from dataset.valid.row import RowValid
+from transforms.operation import TransformNormalize
+from transforms.valid.row import RowValid
 
 
 class TransformDataset:

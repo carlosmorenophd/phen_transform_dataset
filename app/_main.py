@@ -1,7 +1,7 @@
-from dataset.operation import TransformNormalize, Preprocessing
-from dataset.transform import Transform, TransformEnum
-from dataset.normalize import Normalize, NormalizeEnum
-from dataset.valid.row import RowValid, RowValidEnum
+from transforms.operation import TransformNormalize, Preprocessing
+from transforms.transform import Transform, TransformEnum
+from transforms.normalize import Normalize, NormalizeEnum
+from transforms.valid.row import RowValid, RowValidEnum
 from rabbitmq.send_message import send
 
 
