@@ -1,5 +1,5 @@
 from datetime import date
-from weather.main import ParameterEnum, CommunityEnum, FormatEnum
+from app.main import ParameterEnum, CommunityEnum, FormatEnum
 import requests_cache
 import pandas as pd
 import numpy as np

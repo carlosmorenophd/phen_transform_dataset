@@ -2,19 +2,6 @@ from enum import Enum
 import pandas as pd
 import requests_cache
 
-
-class FormatEnum(Enum):
-    JSON = "json"
-
-
-class CommunityEnum(Enum):
-    RE = "re"
-
-
-class OperationEnum(Enum):
-    AVG_ALL = 1
-
-
 class ParameterEnum(Enum):
     ALLSKY_SFC_SW_DWN = "ALLSKY_SFC_SW_DWN"
     CLRSKY_SFC_SW_DWN = "CLRSKY_SFC_SW_DWN"
