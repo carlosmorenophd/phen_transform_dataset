@@ -87,7 +87,7 @@ def get_mexico():
                     param_text, mexico.name, start.year, end.year))
 
                 plt.savefig(
-                    "{}/{}_{}_{}_{}.csv".format(
+                    "{}/{}_{}_{}_{}.jpg".format(
                         folder,
                         param_text,
                         start.year,
