@@ -2,4 +2,4 @@ from enum import Enum
 
 
 class GroupByDateEnum(Enum):
-    DAY_AVG = 0
+    BIG_SINGLE_AVG = 0
