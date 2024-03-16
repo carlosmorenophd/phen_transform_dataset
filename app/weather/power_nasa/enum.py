@@ -49,7 +49,7 @@ class ParameterEnum(Enum):
 
 class ServerPowerEnum(Enum):
     HOURLY_URL = "https://power.larc.nasa.gov/api/temporal/hourly/point"
-    DAYLY_URL = "https://power.larc.nasa.gov/api/temporal/dayly/point"
+    DAILY_URL = "https://power.larc.nasa.gov/api/temporal/dayly/point"
     MONTHLY_URL = "https://power.larc.nasa.gov/api/temporal/monthly/point"
 
 
@@ -121,10 +121,10 @@ def paramter_enum_to_text(param: ParameterEnum) -> str:
 def server_power_enum_to_text(server: ServerPowerEnum):
     if server == ServerPowerEnum.HOURLY_URL:
         return "hourly"
-    elif server == ServerPowerEnum.DAYLY_URL:
-        return "dayly"
+    elif server == ServerPowerEnum.DAILY_URL:
+        return "daily"
     elif server == ServerPowerEnum.MONTHLY_URL:
-        return "mounthly"
+        return "mouthy"
     else:
         return ""
 

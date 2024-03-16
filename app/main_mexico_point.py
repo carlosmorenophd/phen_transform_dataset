@@ -42,7 +42,7 @@ if __name__ == "__main__":
         ParameterEnum.WD50M,
     ]
 
-    endpoints = [ServerPowerEnum.DAYLY_URL]
+    endpoints = [ServerPowerEnum.DAILY_URL]
 
     plot = WeatherPlot()
     plot.plot_from_point_2001(
