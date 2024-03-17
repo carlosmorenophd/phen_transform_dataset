@@ -1,4 +1,8 @@
 asttokens==2.4.1
+attrs==23.2.0
+cattrs==23.2.3
+certifi==2024.2.2
+charset-normalizer==3.3.2
 comm==0.2.1
 contourpy==1.2.0
 cycler==0.12.1
@@ -6,6 +10,7 @@ debugpy==1.8.1
 decorator==5.1.1
 executing==2.0.1
 fonttools==4.49.0
+idna==3.6
 ipykernel==6.29.3
 ipython==8.22.1
 jedi==0.19.1
@@ -31,9 +36,13 @@ pyparsing==3.1.1
 python-dateutil==2.8.2
 pytz==2024.1
 pyzmq==25.1.2
+requests==2.31.0
+requests-cache==1.2.0
 six==1.16.0
 stack-data==0.6.3
 tornado==6.4
 traitlets==5.14.1
 tzdata==2024.1
+url-normalize==1.4.3
+urllib3==2.2.1
 wcwidth==0.2.13

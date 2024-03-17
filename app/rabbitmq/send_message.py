@@ -2,11 +2,11 @@ import pika
 from envparse import env
 import jsonpickle
 from os import getcwd
-from dto.utils import TransformDataset
-from dataset.operation import TransformNormalize
-from dataset.transform import Transform, TransformEnum
-from dataset.normalize import Normalize, NormalizeEnum
-from dataset.valid.row import RowValid, RowValidEnum
+from app.transforms.utils import TransformDataset
+from transforms.operation import TransformNormalize
+from transforms.transform import Transform, TransformEnum
+from transforms.normalize import Normalize, NormalizeEnum
+from transforms.valid.row import RowValid, RowValidEnum
 
 
 def send() -> None:

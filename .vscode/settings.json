@@ -15,9 +15,11 @@
         "fillna",
         "iloc",
         "iterrows",
-        "jsonpickle"
+        "jsonpickle",
+        "nanmean"
     ],
     "cSpell.words": [
-        "dropna"
+        "dropna",
+        "obregon"
     ]
 }
