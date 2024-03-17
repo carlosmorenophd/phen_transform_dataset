@@ -12,6 +12,10 @@ class WeatherSourceCSV():
         self.format_date = '%Y-%m-%d'
         self.data = []
 
+    def clean_data(self):
+        self.df_extracted = None
+        self.data = []
+
     def extract_date(
             self,
             start: str,
@@ -37,6 +41,7 @@ class WeatherSourceCSV():
             operation_group: OperationToGroupEnum,
             is_debug: bool = False,
         ):
+        self.clean_data()
         self.extract_date(start=start, end=end)
         if group_by == GroupByDateEnum.DAY:
             dict_one_row = {}
@@ -49,8 +54,8 @@ class WeatherSourceCSV():
                 if is_debug:
                     print(res_date,' - ', res_date_end)
                 df_operate = self.df_extracted[ 
-                    (self.df_extracted[self.column_key] >= start) &
-                    (self.df_extracted[self.column_key] <= end)
+                    (self.df_extracted[self.column_key] >= res_date) &
+                    (self.df_extracted[self.column_key] <= res_date_end)
                 ]
                 for column in self.df_extracted:
                     if column != self.column_key:
