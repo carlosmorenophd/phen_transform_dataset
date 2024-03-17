@@ -10,7 +10,7 @@ class WeatherSourceCSV():
         self.column_key = column_date
         self.df_extracted = None
         self.format_date = '%Y-%m-%d'
-        self.dict_data = {}
+        self.data = []
 
     def extract_date(
             self,
@@ -26,8 +26,8 @@ class WeatherSourceCSV():
         self.df_extracted.to_csv(file_path, index=False)
     
     def save_transform(self, file_path: str):
-        df = pd.DataFrame([self.dict_data])
-        df.to_csv(file_path)
+        df = pd.DataFrame.from_dict(self.data)
+        df.to_csv(file_path, index=False)
 
     def transform_date(
             self,
@@ -39,6 +39,7 @@ class WeatherSourceCSV():
         ):
         self.extract_date(start=start, end=end)
         if group_by == GroupByDateEnum.DAY:
+            dict_one_row = {}
             start_date = datetime.datetime.strptime(start, self.format_date)
             end_date = datetime.datetime.strptime(end, self.format_date) 
             # - datetime.timedelta(days=2)
@@ -58,8 +59,8 @@ class WeatherSourceCSV():
                             print(column_name)
                         if operation_group == OperationToGroupEnum.AVG:
                             column_name_operation = "{}_AVG".format(column_name)
-                            self.dict_data[column_name_operation] = np.nanmean(df_operate[column])
+                            dict_one_row[column_name_operation] = np.nanmean(df_operate[column])
                 res_date += datetime.timedelta(days=1)
-
+            self.data.append(dict_one_row)
            
 
