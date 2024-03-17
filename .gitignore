@@ -4,3 +4,11 @@
 *_cache.sqlite
 __pycache__/
 test_*
+.DS_Store
+*.jpg
+
+venv/
+
+output*.log
+
+*_test*/
