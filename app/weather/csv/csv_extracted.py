@@ -43,29 +43,36 @@ class WeatherSourceCSV():
         ):
         self.clean_data()
         self.extract_date(start=start, end=end)
-        if group_by == GroupByDateEnum.DAY:
-            dict_one_row = {}
-            start_date = datetime.datetime.strptime(start, self.format_date)
-            end_date = datetime.datetime.strptime(end, self.format_date) 
-            # - datetime.timedelta(days=2)
-            res_date = start_date
-            while res_date <= end_date:
-                res_date_end = res_date + datetime.timedelta(days=1) - datetime.timedelta(seconds=1)
-                if is_debug:
-                    print(res_date,' - ', res_date_end)
-                df_operate = self.df_extracted[ 
-                    (self.df_extracted[self.column_key] >= res_date) &
-                    (self.df_extracted[self.column_key] <= res_date_end)
-                ]
-                for column in self.df_extracted:
-                    if column != self.column_key:
-                        column_name = "{}_{}".format(res_date.strftime("%Y%m%d"),column)
-                        if is_debug:
-                            print(column_name)
-                        if operation_group == OperationToGroupEnum.AVG:
-                            column_name_operation = "{}_AVG".format(column_name)
-                            dict_one_row[column_name_operation] = np.nanmean(df_operate[column])
-                res_date += datetime.timedelta(days=1)
+        dict_one_row = {}
+        start_date = datetime.datetime.strptime(start, self.format_date)
+        end_date = datetime.datetime.strptime(end, self.format_date) 
+        res_date = start_date
+        day_to_group = 1
+        if group_by == GroupByDateEnum.THIRTY_DAY:
+            day_to_group = 30
+        elif group_by == GroupByDateEnum.SEVEN_DAY:
+            day_to_group = 7
+        elif group_by == GroupByDateEnum.FIFTEEN_DAY:
+            day_to_group = 15
+        else: 
+            day_to_group = 1
+        while res_date <= end_date:
+            res_date_end = res_date + datetime.timedelta(days=day_to_group) - datetime.timedelta(seconds=1)
+            if is_debug:
+                print(res_date,' - ', res_date_end)
+            df_operate = self.df_extracted[ 
+                (self.df_extracted[self.column_key] >= res_date) &
+                (self.df_extracted[self.column_key] <= res_date_end)
+            ]
+            for column in self.df_extracted:
+                if column != self.column_key:
+                    column_name = "{}_{}".format(res_date.strftime("%Y%m%d"),column)
+                    if is_debug:
+                        print(column_name)
+                    if operation_group == OperationToGroupEnum.AVG:
+                        column_name_operation = "{}_AVG".format(column_name)
+                        dict_one_row[column_name_operation] = np.nanmean(df_operate[column])
+            res_date += datetime.timedelta(days=day_to_group)
             self.data.append(dict_one_row)
            
 
