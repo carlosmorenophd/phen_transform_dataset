@@ -1,6 +1,5 @@
 from weather.csv.csv_extracted import WeatherSourceCSV
 from weather.csv.enum import GroupByDateEnum, OperationToGroupEnum
-from pandas import to_datetime
 import os
 
 
