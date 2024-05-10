@@ -39,9 +39,11 @@ class WeatherSourceCSV():
             end: str,  
             group_by: GroupByDateEnum,
             operation_group: OperationToGroupEnum,
+            is_clean_data: bool = True,
             is_debug: bool = False,
         ):
-        self.clean_data()
+        if is_clean_data:
+            self.clean_data()
         self.extract_date(start=start, end=end)
         dict_one_row = {}
         start_date = datetime.datetime.strptime(start, self.format_date)
@@ -58,21 +60,24 @@ class WeatherSourceCSV():
             day_to_group = 1
         while res_date <= end_date:
             res_date_end = res_date + datetime.timedelta(days=day_to_group) - datetime.timedelta(seconds=1)
+            if res_date_end >  end_date:
+                print("Upper date")
+                res_date_end = end_date
             if is_debug:
-                print(res_date,' - ', res_date_end)
+                print(res_date,' - ', res_date_end,'- end ', end_date)
             df_operate = self.df_extracted[ 
                 (self.df_extracted[self.column_key] >= res_date) &
                 (self.df_extracted[self.column_key] <= res_date_end)
             ]
             for column in self.df_extracted:
                 if column != self.column_key:
-                    column_name = "{}_{}".format(res_date.strftime("%Y%m%d"),column)
+                    column_name = "{}-{}_{}".format(res_date.strftime("%Y%m%d"), res_date_end.strftime("%Y%m%d"),column)
                     if is_debug:
                         print(column_name)
                     if operation_group == OperationToGroupEnum.AVG:
                         column_name_operation = "{}_AVG".format(column_name)
                         dict_one_row[column_name_operation] = np.nanmean(df_operate[column])
             res_date += datetime.timedelta(days=day_to_group)
-            self.data.append(dict_one_row)
+        self.data.append(dict_one_row)
            
 

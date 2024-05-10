@@ -27,3 +27,12 @@ To run a scrip of python that continue the ejecution
 nohup python app/main.py  > output.log 2>&1 &
 ```
 
+Build docker
+```
+docker build --tag phen/transform-dataset:24.05 .
+```
+
+Run Docker
+```
+docker run  -itd --name transform -v ${PWD}:/phen phen/transform-dataset:24.05
+```
