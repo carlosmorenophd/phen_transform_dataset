@@ -1,6 +1,5 @@
 .venv/
 .~lock.*
-*test.csv
 *_cache.sqlite
 __pycache__/
 .DS_Store
