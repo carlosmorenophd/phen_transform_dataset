@@ -1,0 +1,31 @@
+{
+    "cSpell.ignoreWords": [
+        "ALLSKY",
+        "ALUMINIUM",
+        "CLRSKY",
+        "Degress",
+        "MDEW",
+        "MWET",
+        "PRECIPIT",
+        "PRECTOTCORR",
+        "Phen",
+        "RABBITMQ",
+        "dotenv",
+        "envfile",
+        "envparse",
+        "fillna",
+        "iloc",
+        "iterrows",
+        "jsonpickle",
+        "nanmean",
+        "nswe"
+    ],
+    "cSpell.words": [
+        "dropna",
+        "obregon",
+        "Preproccions"
+    ],
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#024d80",
+    }
+}
