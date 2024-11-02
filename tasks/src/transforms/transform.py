@@ -1,6 +1,9 @@
+"""Function to transform and convert dataset in some specific functions"""
 from enum import Enum
 
+
 class TransformEnum(Enum):
+    """Action to transform"""
     PASS = 0
     FILL_AVG = 1
     STR_NONE = 2
@@ -15,32 +18,35 @@ class TransformEnum(Enum):
 
 
 class Transform():
+    """Main class to transform"""
     def __init__(
-            self, 
-            transformEnum: TransformEnum, 
-            column_base: str = "", 
-            column_coordinate_degree: str = "",
-            column_coordinate_minute: str = "",
-            column_coordinate_NSEW: str = "",
-        ) -> None:
-        self.transformEnum = transformEnum
+        self,
+        transform_enum: TransformEnum,
+        column_base: str = "",
+        column_coordinate_degree: str = "",
+        column_coordinate_minute: str = "",
+        column_coordinate_nswe: str = "",
+    ) -> None:
+        self.transform_enum = transform_enum
         self.column_base = column_base
         self.column_coordinate_minute = column_coordinate_minute
-        self.column_coordinate_NSEW = column_coordinate_NSEW
+        self.column_coordinate_nswe = column_coordinate_nswe
         self.column_coordinate_degree = column_coordinate_degree
 
 
 def transform_N_T_S_M_V(x):
+    """Transform from north, south, west and east"""
     if x.upper() == "NONE":
         return 0
-    elif x.upper() == "TRACES":
+    if x.upper() == "TRACES":
         return 1
-    elif x.upper() == "SLIGHT":
+    if x.upper() == "SLIGHT":
         return 2
-    elif x.upper() == "MODERATE":
+    if x.upper() == "MODERATE":
         return 3
-    elif x.upper() == "SEVERE":
+    if x.upper() == "SEVERE":
         return 4
+    return -1
 
 
 def transform_E_N_L(x):
@@ -66,7 +72,8 @@ def transform_Y_N_U(x):
         return -1
     elif x.upper() == "UNKNOWN":
         return 0
-    
+
+
 def transform_N_S_W_E(x):
     if x.upper() == "N":
         return 1

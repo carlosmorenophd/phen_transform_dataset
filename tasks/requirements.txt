@@ -42,8 +42,10 @@ pure-eval==0.2.2
 Pygments==2.17.2
 pyparsing==3.1.1
 python-dateutil==2.8.2
+python-dotenv==1.0.1
 pytz==2024.1
 pyzmq==25.1.2
+redis==5.2.0
 requests==2.31.0
 requests-cache==1.2.0
 setuptools==69.1.1

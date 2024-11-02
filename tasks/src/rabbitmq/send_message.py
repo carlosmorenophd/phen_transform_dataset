@@ -30,12 +30,12 @@ def send() -> None:
         actions=[
             TransformNormalize(
                 column="GRAIN_YIELD:(t/ha):avg",
-                transform=Transform(transformEnum=TransformEnum.PASS),
+                transform=Transform(transform_enum=TransformEnum.PASS),
                 normalize=Normalize(normalizeEnum=NormalizeEnum.ONE_POSITIVE),
             ),
             TransformNormalize(
                 column='SOWING_DATE:(date)',
-                transform=Transform(transformEnum=TransformEnum.FORCE_ONE),
+                transform=Transform(transform_enum=TransformEnum.FORCE_ONE),
                 normalize=Normalize(normalizeEnum=NormalizeEnum.PASS),
             )],
         remove_rows=[

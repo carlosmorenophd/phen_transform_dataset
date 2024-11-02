@@ -1,15 +1,20 @@
-FROM python:3.12.2-slim-bookworm
+FROM python:3.12-slim-bookworm
 
-WORKDIR /phen
-
-RUN apt-get update
+WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN pip install -r requirements.txt
 
-COPY app/ ./app
+COPY src src/
 
-COPY data/ ./data
+COPY tasks.py .
 
-# CMD ["python", "-u",  "app/main.py"]
+COPY test_task.py .
+
+COPY run.sh .
+
+RUN chmod +x run.sh
+
+ENTRYPOINT sh ./run.sh
+

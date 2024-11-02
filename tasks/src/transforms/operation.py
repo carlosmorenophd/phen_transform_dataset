@@ -1,4 +1,12 @@
-from transforms.transform import (
+"""Operation on"""
+import re
+from os import path, remove
+
+import pandas as pd
+
+from src.transforms.normalize import Normalize, NormalizeEnum
+from src.transforms.valid.row import RowValid, RowValidEnum
+from src.transforms.transform import (
     Transform,
     TransformEnum,
     transform_N_T_S_M_V,
@@ -7,12 +15,11 @@ from transforms.transform import (
     transform_Y_N_U,
     transform_N_S_W_E,
 )
-from transforms.normalize import Normalize, NormalizeEnum
-from transforms.valid.row import RowValid, RowValidEnum
-import pandas as pd
 
 
 class TransformNormalize:
+    """Techniques of normalize"""
+
     def __init__(
             self,
             column: str,
@@ -25,6 +32,8 @@ class TransformNormalize:
 
 
 class Preprocessing ():
+    """Preproccions functions"""
+
     def __init__(
         self,
         save_file: str,
@@ -39,6 +48,7 @@ class Preprocessing ():
         self.remove_rows = remove_rows
 
     def validate_rows(self) -> None:
+        """Validate Rows"""
         for remove_row in self.remove_rows:
             enum = remove_row.valid
             column = remove_row.column
@@ -46,11 +56,10 @@ class Preprocessing ():
                 self.csv = self.csv.dropna(subset=[column])
 
     def transform(self) -> None:
-        import re
         """ Apply the all transformation on actions
         """
         for action in self.actions:
-            enum = action.transform.transformEnum
+            enum = action.transform.transform_enum
             column = action.column
             if enum == TransformEnum.FILL_AVG:
 
@@ -86,13 +95,13 @@ class Preprocessing ():
             elif enum == TransformEnum.COORDINATE_DECIMAL:
                 degree = action.transform.column_coordinate_degree
                 minute = action.transform.column_coordinate_minute
-                n_s_e_w = action.transform.column_coordinate_NSEW
+                n_s_e_w = action.transform.column_coordinate_nswe
                 self.csv_process[column] = (
                     (self.csv[degree] + 1/60 * (self.csv[minute])) * self.csv[n_s_e_w].apply(transform_N_S_W_E))
             elif enum == TransformEnum.COORDINATE_DECIMAL_LIMIT_180:
                 degree = action.transform.column_coordinate_degree
                 minute = action.transform.column_coordinate_minute
-                n_s_e_w = action.transform.column_coordinate_NSEW
+                n_s_e_w = action.transform.column_coordinate_nswe
                 self.csv_process[column] = (
                     self.csv[degree] + 1/60 * (self.csv[minute]) * self.csv[n_s_e_w].apply(transform_N_S_W_E))
                 self.csv_process[column] = self.csv_process[column].apply(
@@ -140,7 +149,7 @@ class Preprocessing ():
                 )
 
     def save(self, is_save_origin: bool = False, is_index: bool = False):
-        from os import path, remove
+        """Save results"""
         if path.exists(self.save_file):
             remove(self.save_file)
         self.csv_process.to_csv(self.save_file, index=is_index)
@@ -152,6 +161,7 @@ class Preprocessing ():
 
 
 def calculate_avg(column_data) -> float:
+    """Calculate avg"""
     elements = list(
         filter(lambda i: not pd.isnull(i), column_data)
     )
