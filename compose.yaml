@@ -1,0 +1,24 @@
+services:
+  tasksdd:
+    build:
+      context: tasks/
+      dockerfile: ${DOCKER_FILE}
+    environment:
+      - REDIS_URL=${REDIS_URL}
+      - FOLDER_DATA=${FOLDER_DATA}
+    networks:
+      phen-net:
+        aliases:
+          - transform-phen-net
+    tty: true
+    stdin_open: true
+    volumes:
+      - "./tasks:/app"
+      - "${PATH_TO_CACHE}:/app/cache/"
+
+networks:
+  phen-net:
+    name: phen-net
+    external: true
+      
+  
