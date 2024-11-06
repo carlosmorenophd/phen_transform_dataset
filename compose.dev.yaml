@@ -13,6 +13,7 @@ services:
     tty: true
     stdin_open: true
     volumes:
+      - "./tasks:/app"
       - "${PATH_TO_CACHE}:/app/cache/"
 
 networks:
