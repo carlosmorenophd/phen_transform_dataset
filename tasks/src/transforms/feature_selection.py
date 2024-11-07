@@ -47,3 +47,25 @@ def select_column_by_list_patter_and(file_in: str, patters_like: list) -> None:
     print(df_filter.columns.values)
     file_out = f"select_patter_{patters_like}_{file_in}"
     save_to_csv(data_frame=df_filter, file_save=file_out)
+
+
+def select_column_by_patter_like_with_static(
+    file_in: str,
+    patter_like: str,
+    static_columns: list,
+) -> None:
+    """Keep only columns that have same str of patters, and some static columns 
+    Args:
+        file_in: File to get the data and is in upload file folder
+        patter_like: str of patterns
+        static_columns (list): column that keep on dataset
+    """
+    df = get_file_to_data_frame(file_name=file_in, folder=FolderCache.UPLOAD)
+    patter = re.compile(patter_like, re.IGNORECASE)
+    df_filter = df.filter(regex=patter)
+    join_static_columns = static_columns + df_filter.columns.tolist()
+    print(f"Static columns - {join_static_columns}")
+    fd_static_filter = df[join_static_columns]
+    print(fd_static_filter.columns.values)
+    file_out = f"select_patter_{patter_like}_{"-".join(world[0] for world in static_columns)}_{file_in}"
+    save_to_csv(data_frame=fd_static_filter, file_save=file_out)

@@ -1,6 +1,8 @@
+"""Class to normalize data"""
 from enum import Enum
 
 class NormalizeEnum(Enum):
+    """Type of normalize"""
     PASS = 0
     ONE_TO_ONE = 1
     ONE_POSITIVE = 2

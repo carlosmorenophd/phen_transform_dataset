@@ -154,7 +154,7 @@ class Preprocessing ():
             remove(self.save_file)
         self.csv_process.to_csv(self.save_file, index=is_index)
         if is_save_origin:
-            new_name = "origin_{0}".format(self.save_file)
+            new_name = f"origin_{self.save_file}"
             if path.exists(new_name):
                 remove(new_name)
             self.csv.to_csv(new_name, index=is_index)
