@@ -51,7 +51,7 @@ def keep_patter_like(file_csv: str, patter_like: str) -> None:
     gc.collect()
     return "success"
 
-
+#TODO: To verification
 @app.task(name="feature_selection-keep_patter_list_like")
 def keep_patter_list_like(file_csv: str, patters_like: str) -> None:
     """Read csv and only pass the column that have like column in a list split by @
@@ -106,7 +106,7 @@ def feature_selection_correlation(file_csv: str, threshold: str, create_heatmap:
         _type_: _description_
     """
 
-    print(f"Parameters: file - {file_csv} threshold - {
+    print(f"Parameters :] file - {file_csv} threshold - {
           threshold} - create_png - {create_heatmap}")
     select_by_correlation(
         file_in=file_csv,
