@@ -40,10 +40,17 @@ docker run  -itd --name transform -v ${PWD}:/phen phen/transform-dataset:24.05
 
 # New documentation
 
-Run to celery by percentage
+Run to some test
 
 
 
 ```
 python test_task.py keep_percentage_of_no_empty pedigree_o_57_c_phenotypic.csv .80
+```
+
+To create a task and continue check it with watch dogs:
+
+
+```
+watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- celery -A tasks worker --loglevel=INFO
 ```

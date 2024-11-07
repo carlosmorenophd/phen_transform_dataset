@@ -2,11 +2,9 @@
 
 
 import sys
-import re
-import pandas as pd
 
 from celery.app import Celery
-from src.support.utils import REDIS_BROKEN
+from src.helpers.key_env import REDIS_BROKEN
 
 
 def keep_percentage_of_no_empty(file_csv, percentage) -> None:
@@ -40,6 +38,7 @@ def patter_like_with_static(file_csv: str, patters_like: str, static_columns: st
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         print(f"Run with props action - {sys.argv[1]}")
+        app = Celery('phen_transform', broker_url=REDIS_BROKEN)
         action = sys.argv[1]
         param1 = sys.argv[2]
         param2 = sys.argv[3]
@@ -65,7 +64,12 @@ if __name__ == "__main__":
                 patters_like=param2,
                 static_columns=param3,
             )
-
+        elif action == "feature_selection-correlation":
+            print("Run - feature_selection-correlation")
+            print(
+                f"file - {sys.argv[2]}, threshold - {sys.argv[3]}, create_heatmap - {param3}")
+            app.send_task(name="feature_selection-correlation",
+                          args=(param1, param2, param3))
         else:
             print("Not action valid")
 

@@ -2,12 +2,13 @@
 import gc
 
 from celery import Celery
-from src.support.utils import REDIS_BROKEN
+from src.helpers.key_env import REDIS_BROKEN
 from src.transforms.feature_selection import (
-    select_column_by_text_like,
-    select_column_by_patter_like,
+    select_by_correlation,
     select_column_by_list_patter_and,
     select_column_by_patter_like_with_static,
+    select_column_by_patter_like,
+    select_column_by_text_like,
 )
 
 print(REDIS_BROKEN)
@@ -87,6 +88,30 @@ def patter_like_with_static(file_csv: str, patter_like: str, static_columns: str
         file_in=file_csv,
         patter_like=patter_like,
         static_columns=static_columns.split(",")
+    )
+    gc.collect()
+    return "success"
+
+
+@app.task(name="feature_selection-correlation")
+def feature_selection_correlation(file_csv: str, threshold: str, create_heatmap: str) -> None:
+    """Read csv and only pass the column that have less correlation threshold
+
+    Args:
+        file_csv (str): file to get from upload folder
+        threshold (str): limit of correlation
+        create_png (str): if can create some png image (heatmap)
+
+    Returns:
+        _type_: _description_
+    """
+
+    print(f"Parameters: file - {file_csv} threshold - {
+          threshold} - create_png - {create_heatmap}")
+    select_by_correlation(
+        file_in=file_csv,
+        threshold=float(threshold),
+        create_heatmap=bool(create_heatmap),
     )
     gc.collect()
     return "success"
