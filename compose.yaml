@@ -2,7 +2,7 @@ services:
   tasksdd:
     build:
       context: tasks/
-      dockerfile: Dockerfile
+      dockerfile: ${DOCKER_FILE}
     environment:
       - REDIS_URL=${REDIS_URL}
       - FOLDER_DATA=${FOLDER_DATA}
@@ -13,6 +13,7 @@ services:
     tty: true
     stdin_open: true
     volumes:
+      - "./tasks:/app"
       - "${PATH_TO_CACHE}:/app/cache/"
 
 networks:
