@@ -70,6 +70,19 @@ if __name__ == "__main__":
                     sys.argv[4],
                 )
             )
+        elif action == "feature_fill-average":
+            print("Run - feature_fill-average")
+            print(
+                f"file -> {
+                    sys.argv[2]
+                }"
+            )
+            app.send_task(
+                name="feature_fill-average",
+                args=(
+                    sys.argv[2],
+                )
+            )
         else:
             print("Not action valid")
 
