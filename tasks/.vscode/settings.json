@@ -10,15 +10,21 @@
         "PRECTOTCORR",
         "Phen",
         "RABBITMQ",
+        "annot",
+        "astype",
+        "cmap",
+        "coolwarm",
         "dotenv",
         "envfile",
         "envparse",
+        "figsize",
         "fillna",
         "iloc",
         "iterrows",
         "jsonpickle",
         "nanmean",
-        "nswe"
+        "nswe",
+        "triu"
     ],
     "cSpell.words": [
         "dropna",

@@ -32,7 +32,7 @@ class TransformNormalize:
 
 
 class Preprocessing ():
-    """Preproccions functions"""
+    """Preprocessing functions"""
 
     def __init__(
         self,
