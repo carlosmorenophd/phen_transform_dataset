@@ -1,28 +1,25 @@
 """Function to use in other class"""
 import os
 
-
 import pandas as pd
-from src.transforms.operation import TransformNormalize
-from src.transforms.valid.row import RowValid
 
 from src.helpers.key_env import IS_DEBUG, FolderCache, FOLDER_DATA
 
 
-class TransformDataset:
-    """Validate transform"""
+# class TransformDataset:
+#     """Validate transform"""
 
-    def __init__(
-        self,
-        source_file_name: str,
-        destiny_file_name: str,
-        actions: list[TransformNormalize],
-        remove_rows: list[RowValid]
-    ) -> None:
-        self.source_file_name = source_file_name
-        self.destiny_file_name = destiny_file_name
-        self.actions = actions
-        self.remove_rows = remove_rows
+#     def __init__(
+#         self,
+#         source_file_name: str,
+#         destiny_file_name: str,
+#         actions: list[TransformNormalize],
+#         remove_rows: list[RowValid]
+#     ) -> None:
+#         self.source_file_name = source_file_name
+#         self.destiny_file_name = destiny_file_name
+#         self.actions = actions
+#         self.remove_rows = remove_rows
 
 
 def get_file(file_name: str, folder: FolderCache) -> str:

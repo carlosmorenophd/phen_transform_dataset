@@ -8,11 +8,10 @@ RUN apt install nano
 
 COPY requirements.txt .
 
+RUN pip install --upgrade pip
+
 RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN chmod +x run.dev.sh
-
-ENTRYPOINT sh ./run.dev.sh
 

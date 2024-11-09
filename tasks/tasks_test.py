@@ -83,6 +83,27 @@ if __name__ == "__main__":
                     sys.argv[2],
                 )
             )
+        elif action == "normalize_dataset":
+# python tasks_test.py normalize_dataset lrace_clean_fill.csv zero_to_one
+            print("Run - normalize_dataset")
+            print(
+                f"file -> {
+                    sys.argv[2]
+                } action -> {
+                    sys.argv[3]
+                } avoid columns - {
+                    sys.argv[4],
+                }"
+            )
+            app.send_task(
+                routing_key="high_priority",
+                name="normalize_dataset",
+                args=(
+                    sys.argv[2],
+                    sys.argv[3],
+                    sys.argv[4],
+                ),
+            )
         else:
             print("Not action valid")
 

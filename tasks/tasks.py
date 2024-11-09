@@ -3,14 +3,16 @@ import gc
 
 from celery import Celery
 from src.helpers.key_env import REDIS_BROKEN, IS_DEBUG, FolderCache
-from src.transforms.feature_selection import (
+from src.feature_selection import (
     select_by_correlation,
     select_column_by_list_patter_and,
     select_column_by_patter_like_with_static,
     select_column_by_patter_like,
     select_column_by_text_like,
 )
-from src.transforms.fill_data import fill_by_feature_by_mean
+from src.missing_empty import fill_by_feature_by_mean
+from src.normalize.action_enums import convert_str_into_normalize_action
+from src.normalize.process import normalize_dataset
 
 if IS_DEBUG:
     print(REDIS_BROKEN)
@@ -138,3 +140,19 @@ def feature_fill_average(file_csv: str) -> None:
     )
     gc.collect()
     return "success"
+
+
+@app.task(name="normalize_dataset")
+def task_normalize_dataset(file_csv: str, action_str: str, avoid_columns_str: str) -> None:
+    """Normalize all dataset
+
+    Args:
+        file_in (str): file to normalize
+        action (str): str the list of action to normalize ()
+    """
+    print(f"Parameters :] file - {file_csv} action - {
+          action_str} avoid columns - {avoid_columns_str}")
+    avoid_columns = avoid_columns_str.split(",")
+    action = convert_str_into_normalize_action(action_str=action_str)
+    normalize_dataset(file_in=file_csv,
+                      folder_file=FolderCache.UPLOAD, action=action, avoid_columns=avoid_columns)
