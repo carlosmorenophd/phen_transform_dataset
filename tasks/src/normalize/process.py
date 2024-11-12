@@ -1,17 +1,8 @@
 """Class to normalize data"""
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
-import pandas as pd
 
 from src.helpers.file_access import get_file_to_data_frame, FolderCache, save_to_csv
 from src.normalize.action_enums import NormalizeActionEnum
-
-
-# class Normalize():
-#     """Class to set normalize function
-#     """
-
-#     def __init__(self, normalize_enum: NormalizeActionEnum) -> None:
-#         self.normalize_enum = normalize_enum
 
 
 def normalize_dataset(
@@ -26,7 +17,8 @@ def normalize_dataset(
         file_in (str): file to normalize
         folder_file (FolderCache): folder where is the file
         avoid_columns (list): list of column to avoid normalize
-        action (NormalizeActionEnum, optional): action or type of normalize. Defaults to NormalizeActionEnum.DEFAULT.
+        action (NormalizeActionEnum, optional): action or type of normalize. 
+            Defaults to NormalizeActionEnum.DEFAULT.
     """
     df = get_file_to_data_frame(file_name=file_in, folder=folder_file)
     if action == NormalizeActionEnum.MINUS_ONE_TO_ONE:

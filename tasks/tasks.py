@@ -10,7 +10,7 @@ from src.feature_selection import (
     select_column_by_patter_like,
     select_column_by_text_like,
 )
-from src.missing_empty import fill_by_feature_by_mean
+from src.missing_empty import missing_by_mean_for_features
 from src.normalize.action_enums import convert_str_into_normalize_action
 from src.normalize.process import normalize_dataset
 
@@ -123,7 +123,7 @@ def feature_selection_correlation(file_csv: str, threshold: str, create_heatmap:
     return "success"
 
 
-@app.task(name="feature_fill-average")
+@app.task(name="missing_fill-average")
 def feature_fill_average(file_csv: str) -> None:
     """Read csv and fill all NAN or empty to avg
 
@@ -134,7 +134,7 @@ def feature_fill_average(file_csv: str) -> None:
     """
     if IS_DEBUG:
         print(f"Parameters :] file - {file_csv}")
-    fill_by_feature_by_mean(
+    missing_by_mean_for_features(
         file_in=file_csv,
         folder_file=FolderCache.UPLOAD,
     )

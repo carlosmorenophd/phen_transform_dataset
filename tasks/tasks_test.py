@@ -70,21 +70,22 @@ if __name__ == "__main__":
                     sys.argv[4],
                 )
             )
-        elif action == "feature_fill-average":
-            print("Run - feature_fill-average")
+        elif action == "missing_fill-average":
+# python tasks_test.py missing_fill-average correlation_Dataset_clean.csv
+            print("Run - missing_fill-average")
             print(
                 f"file -> {
                     sys.argv[2]
                 }"
             )
             app.send_task(
-                name="feature_fill-average",
+                name="missing_fill-average",
                 args=(
                     sys.argv[2],
                 )
             )
         elif action == "normalize_dataset":
-# python tasks_test.py normalize_dataset lrace_clean_fill.csv zero_to_one
+# python tasks_test.py normalize_dataset fill_avg_correlation_Dataset_clean.csv zero_to_one GrainYield
             print("Run - normalize_dataset")
             print(
                 f"file -> {
@@ -92,7 +93,7 @@ if __name__ == "__main__":
                 } action -> {
                     sys.argv[3]
                 } avoid columns - {
-                    sys.argv[4],
+                    sys.argv[4]
                 }"
             )
             app.send_task(

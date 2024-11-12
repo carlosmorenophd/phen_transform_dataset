@@ -3,7 +3,7 @@
 from src.helpers.file_access import get_file_to_data_frame, FolderCache, save_to_csv
 
 
-def fill_by_feature_by_mean(file_in: str, folder_file=FolderCache.UPLOAD) -> None:
+def missing_by_mean_for_features(file_in: str, folder_file=FolderCache.UPLOAD) -> None:
     """Fill all data in every feature (column) by mean of this column
 
     Args:
