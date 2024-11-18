@@ -85,7 +85,7 @@ if __name__ == "__main__":
                 )
             )
         elif action == "normalize_dataset":
-# python tasks_test.py normalize_dataset fill_avg_correlation_Dataset_clean.csv zero_to_one GrainYield
+# python tasks_test.py normalize_dataset correlation_Dataset_clean_sin_ndvi_vidor_csi.csv zero_to_one yield
             print("Run - normalize_dataset")
             print(
                 f"file -> {
