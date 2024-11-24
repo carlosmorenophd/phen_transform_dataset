@@ -13,6 +13,9 @@ from src.feature_selection import (
 from src.missing_empty import missing_by_mean_for_features
 from src.normalize.action_enums import convert_str_into_normalize_action
 from src.normalize.process import normalize_dataset
+from src.search_data.weather_power_nasa.enum_weather import (
+    convert_string_into_transform_weather_action
+)
 
 if IS_DEBUG:
     print(REDIS_BROKEN)
@@ -156,3 +159,33 @@ def task_normalize_dataset(file_csv: str, action_str: str, avoid_columns_str: st
     action = convert_str_into_normalize_action(action_str=action_str)
     normalize_dataset(file_in=file_csv,
                       folder_file=FolderCache.UPLOAD, action=action, avoid_columns=avoid_columns)
+
+
+@app.task(name="search_data_power_hourly")
+def task_search_data_power_hourly(
+    file_csv: str,
+    action_str: str,
+    columns_json_str: str,
+    features_str_coma: str,
+) -> None:
+    """Get data climatic from power nasa server
+
+    Args:
+        file_csv (str): file to get data
+        action_str (str): action to do ('all','mean','max','min')
+        altitude_column (str): altitude column on dataset
+        longitude_column (str): longitude column on dataset
+        latitude_column (str): latitude column on dataset
+    """
+    print(f"Parameters :] file - {
+        file_csv
+    } action - {
+        action_str
+    } columns  - {
+        columns_json_str
+    } features - {
+        features_str_coma
+    } ")
+    action = convert_string_into_transform_weather_action(
+        action_str=action_str)
+    

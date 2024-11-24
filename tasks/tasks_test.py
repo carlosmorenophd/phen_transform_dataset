@@ -71,7 +71,6 @@ if __name__ == "__main__":
                 )
             )
         elif action == "missing_fill-average":
-# python tasks_test.py missing_fill-average correlation_Dataset_clean.csv
             print("Run - missing_fill-average")
             print(
                 f"file -> {
@@ -85,7 +84,6 @@ if __name__ == "__main__":
                 )
             )
         elif action == "normalize_dataset":
-# python tasks_test.py normalize_dataset correlation_Dataset_clean_sin_ndvi_vidor_csi.csv zero_to_one yield
             print("Run - normalize_dataset")
             print(
                 f"file -> {
@@ -103,6 +101,28 @@ if __name__ == "__main__":
                     sys.argv[2],
                     sys.argv[3],
                     sys.argv[4],
+                ),
+            )
+        elif action == "search_data_power_hourly":
+            print("Run - search_data_power_hourly")
+            print(
+                f"file -> {
+                    sys.argv[2]
+                } action -> {
+                    sys.argv[3]
+                } columns - {
+                    sys.argv[4]
+                } features -> {
+                    sys.argv[5]
+                }"
+            )
+            app.send_task(
+                name="search_data_power_hourly",
+                args=(
+                    sys.argv[2],
+                    sys.argv[3],
+                    sys.argv[4],
+                    sys.argv[5],
                 ),
             )
         else:
