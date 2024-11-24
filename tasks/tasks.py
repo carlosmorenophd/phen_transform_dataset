@@ -14,7 +14,8 @@ from src.missing_empty import missing_by_mean_for_features
 from src.normalize.action_enums import convert_str_into_normalize_action
 from src.normalize.process import normalize_dataset
 from src.search_data.weather_power_nasa.enum_weather import (
-    convert_string_into_transform_weather_action
+    convert_string_to_transform_weather_action,
+    convert_string_to_column_definition,
 )
 
 if IS_DEBUG:
@@ -186,6 +187,9 @@ def task_search_data_power_hourly(
     } features - {
         features_str_coma
     } ")
-    action = convert_string_into_transform_weather_action(
-        action_str=action_str)
-    
+    action = convert_string_to_transform_weather_action(
+        action_str=action_str
+    )
+    columns_definition = convert_string_to_column_definition(
+        column_definition_str=columns_json_str
+    )

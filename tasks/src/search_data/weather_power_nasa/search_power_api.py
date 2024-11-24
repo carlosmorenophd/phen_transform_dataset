@@ -1,27 +1,15 @@
 """Search data from power server"""
-from dataclasses import dataclass
-from datetime import date
-
 
 import pandas as pd
 import requests_cache
 
 from src.search_data.weather_power_nasa.enum_weather import (
-    CommunityPowerEnum,
-    FormatPowerEnum,
-    ParameterEnum,
-    UrlServerAPIEnum,
+    CommunityPowerApiEnum,
+    FormatPowerApiEnum,
+    FeaturesPowerApiEnum,
+    UrlPowerAPIEnum,
+    ColumnDefinition,
 )
-
-
-@dataclass
-class ColumnDefinition():
-    """All column to get information from power API
-    """
-    latitude_column: str
-    longitude_column: str
-    start_date_column: str
-    end_date_column: str
 
 
 class WeatherCSV():
@@ -32,12 +20,12 @@ class WeatherCSV():
         self,
         file_name: str,
         column_definition: ColumnDefinition,
-        parameters: list[ParameterEnum],
+        parameters: list[FeaturesPowerApiEnum],
     ) -> None:
         self.name_file = file_name
         self.column_definition = column_definition
         self.parameters = parameters
-        self.url = UrlServerAPIEnum.HOURLY_URL
+        self.url = UrlPowerAPIEnum.HOURLY_URL
         self.csv = pd.read_csv(file_name)
 
     def fetching_wheat(self):
@@ -63,9 +51,9 @@ class WeatherCSV():
                     "end": row["date_end"],
                     "latitude": row[latitude_column],
                     "longitude": row[longitude_column],
-                    "community": CommunityPowerEnum.RE,
+                    "community": CommunityPowerApiEnum.RE,
                     "parameters": param,
-                    "format": FormatPowerEnum.JSON,
+                    "format": FormatPowerApiEnum.JSON,
                     "user": "cloud",
                     "header": True,
                     "time-standard": 'lst',
@@ -73,10 +61,10 @@ class WeatherCSV():
                 response = session.get(url=self.url, params=params)
                 result = response.json()["properties"]["parameter"]
                 print(result)
-                
-                    # avg = sum(result[param].values()) / \
-                    #     float(len(result[param]))
-                    # self.csv.at[index, param] = avg
+
+                # avg = sum(result[param].values()) / \
+                #     float(len(result[param]))
+                # self.csv.at[index, param] = avg
 
     def save(self, save_file):
         """Save file
@@ -226,4 +214,3 @@ class WeatherCSV():
 #             return "{}".format(self.date_start), "{}".format(self.date_end)
 #         else:
 #             return self.date_start.strftime("%Y%m%d"), self.date_end.strftime("%Y%m%d")
-

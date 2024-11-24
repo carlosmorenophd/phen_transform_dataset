@@ -1,9 +1,10 @@
 """Get all data class and enum for weather"""
-
+from dataclasses import dataclass
 from enum import Enum
+import json
 
 
-class FormatPowerEnum(Enum):
+class FormatPowerApiEnum(Enum):
     """Type of format for power API
 
     Args:
@@ -12,7 +13,7 @@ class FormatPowerEnum(Enum):
     JSON = "json"
 
 
-class CommunityPowerEnum(Enum):
+class CommunityPowerApiEnum(Enum):
     """Type of community for power API
 
     Args:
@@ -21,7 +22,7 @@ class CommunityPowerEnum(Enum):
     RE = "re"
 
 
-class ParameterEnum(Enum):
+class FeaturesPowerApiEnum(Enum):
     """Enum to get from server
 
     Args:
@@ -59,7 +60,17 @@ class ParameterEnum(Enum):
     WD50M = "WD50M"
 
 
-class UrlServerAPIEnum(Enum):
+@dataclass
+class ColumnDefinition():
+    """All column to get information from power API
+    """
+    latitude_column: str
+    longitude_column: str
+    start_date_column: str
+    end_date_column: str
+
+
+class UrlPowerAPIEnum(Enum):
     """List of endpoint to get data from nasa power API
 
     Args:
@@ -70,7 +81,7 @@ class UrlServerAPIEnum(Enum):
     MONTHLY_URL = "https://power.larc.nasa.gov/api/temporal/monthly/point"
 
 
-def parameter_enum_to_text_spanish(param: ParameterEnum) -> str:
+def feature_power_to_text_spanish(param: FeaturesPowerApiEnum) -> str:
     """Cat enum to spanish definition
 
     Args:
@@ -79,70 +90,70 @@ def parameter_enum_to_text_spanish(param: ParameterEnum) -> str:
     Returns:
         str: definition on spanish
     """
-    if param == ParameterEnum.ALLSKY_SFC_SW_DWN:
+    if param == FeaturesPowerApiEnum.ALLSKY_SFC_SW_DWN:
         return "radiacion_total"
-    if param == ParameterEnum.CLRSKY_SFC_SW_DWN:
+    if param == FeaturesPowerApiEnum.CLRSKY_SFC_SW_DWN:
         return "radiacion_alncaza_superficie"
-    if param == ParameterEnum.ALLSKY_KT:
+    if param == FeaturesPowerApiEnum.ALLSKY_KT:
         return "radiacion_sin_nubes"
-    if param == ParameterEnum.ALLSKY_SFC_LW_DWN:
+    if param == FeaturesPowerApiEnum.ALLSKY_SFC_LW_DWN:
         return "total_radiacion_onda_larga"
-    if param == ParameterEnum.ALLSKY_SFC_PAR_TOT:
+    if param == FeaturesPowerApiEnum.ALLSKY_SFC_PAR_TOT:
         return "total_radiacion_fotosimetica"
-    if param == ParameterEnum.CLRSKY_SFC_PAR_TOT:
+    if param == FeaturesPowerApiEnum.CLRSKY_SFC_PAR_TOT:
         return "radiacion_fotosimetica"
-    if param == ParameterEnum.ALLSKY_SFC_UVA:
+    if param == FeaturesPowerApiEnum.ALLSKY_SFC_UVA:
         return "uva"
-    if param == ParameterEnum.ALLSKY_SFC_UVB:
+    if param == FeaturesPowerApiEnum.ALLSKY_SFC_UVB:
         return "uvb"
-    if param == ParameterEnum.ALLSKY_SFC_UV_INDEX:
+    if param == FeaturesPowerApiEnum.ALLSKY_SFC_UV_INDEX:
         return "dencidad_radiacion"
-    if param == ParameterEnum.T2M:
+    if param == FeaturesPowerApiEnum.T2M:
         return "temperatura_2"
-    if param == ParameterEnum.T2MDEW:
+    if param == FeaturesPowerApiEnum.T2MDEW:
         return "punto_congelacion_2"
-    if param == ParameterEnum.T2MWET:
+    if param == FeaturesPowerApiEnum.T2MWET:
         return "temperatura_bulbo_humedo_2"
-    if param == ParameterEnum.TS:
+    if param == FeaturesPowerApiEnum.TS:
         return "temperatura_piel_tierra"
-    if param == ParameterEnum.T2M_RANGE:
+    if param == FeaturesPowerApiEnum.T2M_RANGE:
         return "temperatura_range_2"
-    if param == ParameterEnum.T2M_MAX:
+    if param == FeaturesPowerApiEnum.T2M_MAX:
         return "temperatura_max_2"
-    if param == ParameterEnum.T2M_MIN:
+    if param == FeaturesPowerApiEnum.T2M_MIN:
         return "temperatura_min_2"
-    if param == ParameterEnum.QV2M:
+    if param == FeaturesPowerApiEnum.QV2M:
         return "humedad_espeficica_2"
-    if param == ParameterEnum.RH2M:
+    if param == FeaturesPowerApiEnum.RH2M:
         return "humedad_realtiva_2"
-    if param == ParameterEnum.PRECTOTCORR:
+    if param == FeaturesPowerApiEnum.PRECTOTCORR:
         return "precipitacion_pluvial"
-    if param == ParameterEnum.PS:
+    if param == FeaturesPowerApiEnum.PS:
         return "presion_atmosferica"
-    if param == ParameterEnum.WS10M:
+    if param == FeaturesPowerApiEnum.WS10M:
         return "velocidad_viento_10"
-    if param == ParameterEnum.WS10M_MAX:
+    if param == FeaturesPowerApiEnum.WS10M_MAX:
         return "velocidad_viento_max_10"
-    if param == ParameterEnum.WS10M_MIN:
+    if param == FeaturesPowerApiEnum.WS10M_MIN:
         return "velocidad_viento_min_10"
-    if param == ParameterEnum.WS10M_RANGE:
+    if param == FeaturesPowerApiEnum.WS10M_RANGE:
         return "velocidad_viento_rango_10"
-    if param == ParameterEnum.WD10M:
+    if param == FeaturesPowerApiEnum.WD10M:
         return "direccion_viento_10"
-    if param == ParameterEnum.WS50M:
+    if param == FeaturesPowerApiEnum.WS50M:
         return "velocidad_viento_50"
-    if param == ParameterEnum.WS50M_MAX:
+    if param == FeaturesPowerApiEnum.WS50M_MAX:
         return "velocidad_viento_max_50"
-    if param == ParameterEnum.WS50M_MIN:
+    if param == FeaturesPowerApiEnum.WS50M_MIN:
         return "velocidad_viento_min_50"
-    if param == ParameterEnum.WS50M_RANGE:
+    if param == FeaturesPowerApiEnum.WS50M_RANGE:
         return "velocidad_viento_rango_50"
-    if param == ParameterEnum.WD50M:
+    if param == FeaturesPowerApiEnum.WD50M:
         return "direccion_viento_50"
     raise NotImplementedError("In valid enum ")
 
 
-def url_server_power_enum_to_text(server: UrlServerAPIEnum):
+def url_power_enum_to_text(server: UrlPowerAPIEnum):
     """get text of 
 
     Args:
@@ -154,11 +165,11 @@ def url_server_power_enum_to_text(server: UrlServerAPIEnum):
     Returns:
         _type_: _description_
     """
-    if server == UrlServerAPIEnum.HOURLY_URL:
+    if server == UrlPowerAPIEnum.HOURLY_URL:
         return "hourly"
-    if server == UrlServerAPIEnum.DAILY_URL:
+    if server == UrlPowerAPIEnum.DAILY_URL:
         return "daily"
-    if server == UrlServerAPIEnum.MONTHLY_URL:
+    if server == UrlPowerAPIEnum.MONTHLY_URL:
         return "mouthy"
     raise NotImplementedError("Not valid server power enum")
 
@@ -172,7 +183,7 @@ class TransformWeatherActionEnum(Enum):
     MINUS = "minus"
 
 
-def convert_string_into_transform_weather_action(action_str) -> TransformWeatherActionEnum:
+def convert_string_to_transform_weather_action(action_str) -> TransformWeatherActionEnum:
     """Cast str into action
 
     Returns:
@@ -189,6 +200,63 @@ def convert_string_into_transform_weather_action(action_str) -> TransformWeather
     raise ModuleNotFoundError("Convert not valid - for normalize action")
 
 
+def convert_string_to_column_definition(column_definition_str) -> ColumnDefinition:
+    """Convert string into columns definition
+
+    Args:
+        action_str (_type_): string to cast
+
+    Returns:
+        ColumnDefinition: object column definition
+    """
+    column_definition = json.loads(column_definition_str)
+    if "latitude_column" not in column_definition:
+        raise NameError("latitude_column don't exist")
+    if "longitude_column" not in column_definition:
+        raise NameError("longitude_column don't exist")
+    if "start_date_column" not in column_definition:
+        raise NameError("start_date_column don't exist")
+    if "end_date_column" not in column_definition:
+        raise NameError("end_date_column don't exist")
+    return column_definition
+
+
+def convert_string_to_feature_power_list_(column_definition_str) -> list[FeaturesPowerApiEnum]:
+    """Cast string to list of features power api
+
+    Args:
+        column_definition_str (_type_): string to cast
+
+    Returns:
+        list[FeaturesPowerApiEnum]: list off features
+    """
+
+    if column_definition_str == "ALL_ALL":
+        return [features.value for features in FeaturesPowerApiEnum]
+    if "," in column_definition_str:
+        features = []
+        for input_str in column_definition_str.split(","):
+            features.append(convert_string_to_feature_power(input_str=input_str))
+        return features
+    raise NameError("don't exist this values on features power api")
+
+
+def convert_string_to_feature_power(input_str) -> FeaturesPowerApiEnum:
+    """Cast one text to single feature power api
+
+    Args:
+        input_str (_type_): text to cast
+
+    Raises:
+        NameError: Feature
+
+    Returns:
+        FeaturesPowerApiEnum: Error feature not valid
+    """
+    for feature in FeaturesPowerApiEnum:
+        if feature.value == input_str:
+            return feature.value
+    raise NameError(f"Feature not valid {input_str}")
 # class CountryGPS():
 #     """Class with country and geo reference
 #     """
