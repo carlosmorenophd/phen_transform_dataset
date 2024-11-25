@@ -2,7 +2,7 @@
 import gc
 
 from celery import Celery
-from src.helpers.key_env import REDIS_BROKEN, IS_DEBUG, FolderCache
+from src.helpers.key_env import REDIS_BROKEN, IS_DEBUG, FolderList, FileInformation
 from src.feature_selection import (
     select_by_correlation,
     select_column_by_list_patter_and,
@@ -16,7 +16,9 @@ from src.normalize.process import normalize_dataset
 from src.search_data.weather_power_nasa.enum_weather import (
     convert_string_to_transform_weather_action,
     convert_string_to_column_definition,
+    convert_string_to_feature_power_list,
 )
+from src.search_data.weather_power_nasa.search_power_api import WeatherExportDataFrame
 
 if IS_DEBUG:
     print(REDIS_BROKEN)
@@ -140,7 +142,7 @@ def feature_fill_average(file_csv: str) -> None:
         print(f"Parameters :] file - {file_csv}")
     missing_by_mean_for_features(
         file_in=file_csv,
-        folder_file=FolderCache.UPLOAD,
+        folder_file=FolderList.UPLOAD,
     )
     gc.collect()
     return "success"
@@ -159,7 +161,7 @@ def task_normalize_dataset(file_csv: str, action_str: str, avoid_columns_str: st
     avoid_columns = avoid_columns_str.split(",")
     action = convert_str_into_normalize_action(action_str=action_str)
     normalize_dataset(file_in=file_csv,
-                      folder_file=FolderCache.UPLOAD, action=action, avoid_columns=avoid_columns)
+                      folder_file=FolderList.UPLOAD, action=action, avoid_columns=avoid_columns)
 
 
 @app.task(name="search_data_power_hourly")
@@ -193,3 +195,17 @@ def task_search_data_power_hourly(
     columns_definition = convert_string_to_column_definition(
         column_definition_str=columns_json_str
     )
+    features = convert_string_to_feature_power_list(
+        features_str=features_str_coma)
+    file_information = FileInformation(_file_name=file_csv)
+    print(f"columns definition {columns_definition}")
+    weather = WeatherExportDataFrame(
+        file_information=file_information,
+        columns_definition=columns_definition,
+        features=features,
+        action=action,
+    )
+    weather.fetching_wheat()
+    weather.save()
+    del weather
+    gc.collect()

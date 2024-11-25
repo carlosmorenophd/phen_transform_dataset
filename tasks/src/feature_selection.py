@@ -4,7 +4,7 @@ import re
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from src.helpers.file_access import get_file_to_data_frame, FolderCache, save_to_csv, get_file
+from src.helpers.file_access import get_file_to_data_frame, FolderList, save_to_csv, get_file
 
 
 def select_column_by_text_like(file_in: str, percentage: float) -> None:
@@ -15,7 +15,7 @@ def select_column_by_text_like(file_in: str, percentage: float) -> None:
     """
     if percentage > 1 or percentage < 0:
         raise ValueError("Percentage only be 0 to 1")
-    df = get_file_to_data_frame(file_name=file_in, folder=FolderCache.UPLOAD)
+    df = get_file_to_data_frame(file_name=file_in, folder=FolderList.UPLOAD)
     percentage_no_null = df.notnull().mean()
     select_columns = percentage_no_null[percentage_no_null >
                                         percentage].index.values
@@ -31,7 +31,7 @@ def select_column_by_patter_like(file_in: str, patter_like: str) -> None:
         file_in: File to get the data and is in upload file folder
         patter_like: str of patterns
     """
-    df = get_file_to_data_frame(file_name=file_in, folder=FolderCache.UPLOAD)
+    df = get_file_to_data_frame(file_name=file_in, folder=FolderList.UPLOAD)
     patter = re.compile(patter_like, re.IGNORECASE)
     df_filter = df.filter(regex=patter)
     print(df_filter.columns.values)
@@ -45,7 +45,7 @@ def select_column_by_list_patter_and(file_in: str, patters_like: list) -> None:
         file_in: File to get the data and is in upload file folder
         patter_like: List of patterns
     """
-    df = get_file_to_data_frame(file_name=file_in, folder=FolderCache.UPLOAD)
+    df = get_file_to_data_frame(file_name=file_in, folder=FolderList.UPLOAD)
     patter = re.compile(r"*".join(patters_like), re.IGNORECASE)
     df_filter = df.filter(regex=patter)
     print(df_filter.columns.values)
@@ -64,7 +64,7 @@ def select_column_by_patter_like_with_static(
         patter_like: str of patterns
         static_columns (list): column that keep on dataset
     """
-    df = get_file_to_data_frame(file_name=file_in, folder=FolderCache.UPLOAD)
+    df = get_file_to_data_frame(file_name=file_in, folder=FolderList.UPLOAD)
     patter = re.compile(patter_like, re.IGNORECASE)
     df_filter = df.filter(regex=patter)
     join_static_columns = static_columns + df_filter.columns.tolist()
@@ -84,7 +84,7 @@ def select_by_correlation(file_in: str, threshold: float, create_heatmap: bool =
         file_in (str): file to work
         threshold (float): limit to include the column on the new dataset
     """
-    df = get_file_to_data_frame(file_name=file_in, folder=FolderCache.UPLOAD)
+    df = get_file_to_data_frame(file_name=file_in, folder=FolderList.UPLOAD)
     print(f"create heatmap - {create_heatmap}")
     if create_heatmap:
         file_only_name = file_in.split(".")
@@ -93,7 +93,7 @@ def select_by_correlation(file_in: str, threshold: float, create_heatmap: bool =
         sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
         plt.title(f'Correlation Matrix {file_only_name[0]}')
         file_name_png = f'{file_only_name[0]}.png'
-        file_save = get_file(file_name=file_name_png, folder=FolderCache.UPLOAD)
+        file_save = get_file(file_name=file_name_png, folder=FolderList.UPLOAD)
         plt.savefig(file_save)
     corr_matrix = df.corr().abs()
     upper_tri = corr_matrix.where(

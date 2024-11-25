@@ -61,7 +61,7 @@ class FeaturesPowerApiEnum(Enum):
 
 
 @dataclass
-class ColumnDefinition():
+class ColumnsDefinition():
     """All column to get information from power API
     """
     latitude_column: str
@@ -200,7 +200,7 @@ def convert_string_to_transform_weather_action(action_str) -> TransformWeatherAc
     raise ModuleNotFoundError("Convert not valid - for normalize action")
 
 
-def convert_string_to_column_definition(column_definition_str) -> ColumnDefinition:
+def convert_string_to_column_definition(column_definition_str) -> ColumnsDefinition:
     """Convert string into columns definition
 
     Args:
@@ -221,7 +221,7 @@ def convert_string_to_column_definition(column_definition_str) -> ColumnDefiniti
     return column_definition
 
 
-def convert_string_to_feature_power_list_(column_definition_str) -> list[FeaturesPowerApiEnum]:
+def convert_string_to_feature_power_list(features_str) -> list[FeaturesPowerApiEnum]:
     """Cast string to list of features power api
 
     Args:
@@ -231,12 +231,13 @@ def convert_string_to_feature_power_list_(column_definition_str) -> list[Feature
         list[FeaturesPowerApiEnum]: list off features
     """
 
-    if column_definition_str == "ALL_ALL":
-        return [features.value for features in FeaturesPowerApiEnum]
-    if "," in column_definition_str:
+    if features_str == "ALL_ALL":
+        return [features for features in FeaturesPowerApiEnum]
+    if "," in features_str:
         features = []
-        for input_str in column_definition_str.split(","):
-            features.append(convert_string_to_feature_power(input_str=input_str))
+        for input_str in features_str.split(","):
+            features.append(
+                convert_string_to_feature_power(input_str=input_str))
         return features
     raise NameError("don't exist this values on features power api")
 
@@ -257,6 +258,7 @@ def convert_string_to_feature_power(input_str) -> FeaturesPowerApiEnum:
         if feature.value == input_str:
             return feature.value
     raise NameError(f"Feature not valid {input_str}")
+
 # class CountryGPS():
 #     """Class with country and geo reference
 #     """
