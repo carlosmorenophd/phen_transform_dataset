@@ -78,7 +78,7 @@ class ColumnsDefinition():
 
 
 @dataclass
-class UrlPowerAPIEnum():
+class UrlPowerAPI():
     """List of endpoint to get data from nasa power API
     """
     hourly_url: str = os.getenv(
@@ -161,7 +161,7 @@ def feature_power_to_text_spanish(param: FeaturesPowerApiEnum) -> str:
     raise NotImplementedError("In valid enum ")
 
 
-def url_power_enum_to_text(server: UrlPowerAPIEnum):
+def url_power_enum_to_text(server: str):
     """get text of 
 
     Args:
@@ -173,11 +173,12 @@ def url_power_enum_to_text(server: UrlPowerAPIEnum):
     Returns:
         _type_: _description_
     """
-    if server == UrlPowerAPIEnum.hourly_url:
+    url = UrlPowerAPI()
+    if server == url.hourly_url:
         return "hourly"
-    if server == UrlPowerAPIEnum.daily_url:
+    if server == url.daily_url:
         return "daily"
-    if server == UrlPowerAPIEnum.monthly_url:
+    if server == url.monthly_url:
         return "mouthy"
     raise NotImplementedError("Not valid server power enum")
 
@@ -240,7 +241,7 @@ def convert_string_to_feature_power_list(features_str) -> list[FeaturesPowerApiE
     """
 
     if features_str == "ALL_ALL":
-        return [features for features in FeaturesPowerApiEnum]
+        return list(features for features in FeaturesPowerApiEnum)
     if "," in features_str:
         features = []
         for input_str in features_str.split(","):
