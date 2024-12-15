@@ -10,7 +10,7 @@ from src.search_data.weather_power_nasa.enum_weather import (
     FeaturesPowerApiEnum,
     FormatPowerApiEnum,
     TransformWeatherActionEnum,
-    UrlPowerAPIEnum,
+    UrlPowerAPI,
 )
 from src.helpers.file_access import StorageFile
 from src.helpers.key_env import FileInformation, FolderList
@@ -27,8 +27,9 @@ class WeatherExportDataFrame():
         features: list[FeaturesPowerApiEnum],
         action: TransformWeatherActionEnum,
     ) -> None:
+        url_api = UrlPowerAPI()
         self.storage = StorageFile(file_information=file_information)
-        self.url = UrlPowerAPIEnum.daily_url.value
+        self.url = url_api.daily_url
         self.columns_definition = columns_definition
         self.features = features
         self.action = action
