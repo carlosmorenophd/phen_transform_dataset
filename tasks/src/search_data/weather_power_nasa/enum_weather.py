@@ -241,7 +241,7 @@ def convert_string_to_feature_power_list(features_str) -> list[FeaturesPowerApiE
     """
 
     if features_str == "ALL_ALL":
-        return [features for features in FeaturesPowerApiEnum]
+        return list(features for features in FeaturesPowerApiEnum)
     if "," in features_str:
         features = []
         for input_str in features_str.split(","):

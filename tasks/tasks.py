@@ -175,9 +175,10 @@ def task_search_data_power_hourly(
 
     Args:
         file_csv (str): file to work
-        action_str (str): _description_
-        columns_json_str (str): _description_
-        features_str_coma (str): _description_
+        action_str (str): action to do: all, no_transform, mean, max, minus
+        columns_json_str (str): str to convert in 4 columns latitude_column, 
+            longitude_column, start_date_column
+        features_str_coma (str): list of features split by coma, if need set ALL_ALL
     """
     print(f"Parameters :] file - {
         file_csv
