@@ -1,15 +1,22 @@
 stages:
-  - compose_stage
+  - deploy_production
 
 develop_celery:
-  stage: compose_stage
+  variables:
+    SECURE_FILES_DOWNLOAD_PATH: .
+  stage: deploy_production
   tags:
-    - dev_phd
+    - production_phd
   only:
     - main
   script:
-    - echo $PWD
-    - export PATH_TO_CACHE=/mnt/resource/_phen/cache/transform
+    - ls
+    - if [ -f "/home/jcms/deploy/transform/.env" ]; then
+        cp "/path/to/your/file.txt" ".env"
+        echo "Archivo copiado exitosamente"
+      else
+        echo "El archivo no existe"
+      fi
     - docker compose -f compose.yaml down
     - docker compose -f compose.yaml build
     - docker compose -f compose.yaml up -d
