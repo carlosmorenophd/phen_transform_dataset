@@ -10,6 +10,8 @@ develop_celery:
   only:
     - main
   script:
+    - curl -s https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer | bash
+    - ls -lah .secure_files
     - ls -la
     - docker compose -f compose.yaml down
     - docker compose -f compose.yaml build
