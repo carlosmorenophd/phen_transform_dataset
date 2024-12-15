@@ -68,14 +68,8 @@ python tasks_test.py search_data_power_hourly 3.14_lrace_geo.csv all '{"latitude
 
 In collaboration with the [Universidad Autonoma del Estado de Mexico](https://www.uaemex.mx/)  and supported by [CONAHCYT](https://conahcyt.mx/) scholarships, this project was created. For new features, changes, or improvements, please reach out to:
 
-Student, Ph.D.
-
-Juan Carlos Moreno Sanchez
-
-Please contact me at:
-
+Student, Ph.D. Juan Carlos Moreno Sanchez
 <carlos.moreno.phd@gmail.com>
-
 <jcmorenos001@alumno.uaemex.mx>
 
 
