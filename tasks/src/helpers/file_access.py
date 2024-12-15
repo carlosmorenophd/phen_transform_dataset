@@ -1,34 +1,25 @@
 """Function to use in other class"""
 import os
-from enum import Enum
 
 import pandas as pd
-from dotenv import load_dotenv
-from src.transforms.operation import TransformNormalize
-from src.transforms.valid.row import RowValid
 
-load_dotenv()
-
-FOLDER_DATA = os.getenv('FOLDER_DATA', '../cache/')
-REDIS_BROKEN = os.getenv("REDIS_URL")
-IS_DEBUG=bool(os.getenv('DEBUG_MODE', 'false'))
-FolderCache = Enum('FolderCache', [("UPLOAD", "upload_files")])
+from src.helpers.key_env import IS_DEBUG, FolderCache, FOLDER_DATA
 
 
-class TransformDataset:
-    """Validate transform"""
+# class TransformDataset:
+#     """Validate transform"""
 
-    def __init__(
-        self,
-        source_file_name: str,
-        destiny_file_name: str,
-        actions: list[TransformNormalize],
-        remove_rows: list[RowValid]
-    ) -> None:
-        self.source_file_name = source_file_name
-        self.destiny_file_name = destiny_file_name
-        self.actions = actions
-        self.remove_rows = remove_rows
+#     def __init__(
+#         self,
+#         source_file_name: str,
+#         destiny_file_name: str,
+#         actions: list[TransformNormalize],
+#         remove_rows: list[RowValid]
+#     ) -> None:
+#         self.source_file_name = source_file_name
+#         self.destiny_file_name = destiny_file_name
+#         self.actions = actions
+#         self.remove_rows = remove_rows
 
 
 def get_file(file_name: str, folder: FolderCache) -> str:
@@ -47,6 +38,17 @@ def get_file_to_data_frame(file_name: str, folder: FolderCache) -> pd.DataFrame:
     if os.path.isfile(file):
         return pd.read_csv(file)
     raise FileNotFoundError(f"file not found - {file}")
+
+
+def get_absolute_file_to_data_frame(path_to_file: str) -> pd.DataFrame:
+    """file access - load csv file with pandas from absolute file name """
+    if IS_DEBUG:
+        print(os.getcwd())
+        print(FOLDER_DATA)
+        print(path_to_file)
+    if os.path.isfile(path_to_file):
+        return pd.read_csv(path_to_file)
+    raise FileNotFoundError(f"file not found - {path_to_file}")
 
 
 def save_to_csv(data_frame: pd.DataFrame, file_save: str, is_index: bool = False) -> None:

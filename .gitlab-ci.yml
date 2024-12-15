@@ -6,11 +6,10 @@ develop_celery:
   tags:
     - dev_phd
   only:
-    - develop
+    - main
   script:
     - echo $PWD
     - export PATH_TO_CACHE=/mnt/resource/_phen/cache/transform
-    - export DOCKER_FILE=Dockerfile
-    - docker compose -f compose.yaml build
     - docker compose -f compose.yaml down
+    - docker compose -f compose.yaml build
     - docker compose -f compose.yaml up -d

@@ -4,7 +4,7 @@ from os import path, remove
 
 import pandas as pd
 
-from src.transforms.normalize import Normalize, NormalizeEnum
+from normalize.process import Normalize, NormalizeActionEnum
 from src.transforms.valid.row import RowValid, RowValidEnum
 from src.transforms.transform import (
     Transform,
@@ -32,7 +32,7 @@ class TransformNormalize:
 
 
 class Preprocessing ():
-    """Preproccions functions"""
+    """Preprocessing functions"""
 
     def __init__(
         self,
@@ -130,16 +130,16 @@ class Preprocessing ():
         """ Normalize the data set
         """
         for action in self.actions:
-            enum = action.normalize.normalizeEnum
+            enum = action.normalize.normalize_enum
             column = action.column
-            if enum == NormalizeEnum.PASS:
+            if enum == NormalizeActionEnum.PASS:
                 self.csv_process[column] = self.csv_process[column]
-            elif enum == NormalizeEnum.ONE_POSITIVE:
+            elif enum == NormalizeActionEnum.ONE_POSITIVE:
                 max = self.csv_process[column].max()
                 min = self.csv_process[column].min()
                 self.csv_process[column] = self.csv_process[column].map(
                     lambda item: ((item - min) / (max - min)))
-            elif enum == NormalizeEnum.ONE_TO_ONE:
+            elif enum == NormalizeActionEnum.ONE_TO_ONE:
                 max = self.csv_process[column].max()
                 min = self.csv_process[column].min()
                 self.csv_process[column] = self.csv_process[column].map(
@@ -154,7 +154,7 @@ class Preprocessing ():
             remove(self.save_file)
         self.csv_process.to_csv(self.save_file, index=is_index)
         if is_save_origin:
-            new_name = "origin_{0}".format(self.save_file)
+            new_name = f"origin_{self.save_file}"
             if path.exists(new_name):
                 remove(new_name)
             self.csv.to_csv(new_name, index=is_index)

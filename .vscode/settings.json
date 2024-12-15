@@ -3,6 +3,9 @@
         "activityBar.background": "#e2e7f0",
     },
     "cSpell.ignoreWords": [
-        "phen"
+        "loglevel",
+        "phen",
+        "tasksdd",
+        "watchmedo"
     ]
 }

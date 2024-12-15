@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from weather.csv.enum import GroupByDateEnum, OperationToGroupEnum
+from search_data.csv.enum import GroupByDateEnum, OperationToGroupEnum
 import datetime
 
 class WeatherSourceCSV():
