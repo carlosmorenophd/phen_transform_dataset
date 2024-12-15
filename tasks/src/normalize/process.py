@@ -1,13 +1,13 @@
 """Class to normalize data"""
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
-from src.helpers.file_access import get_file_to_data_frame, FolderCache, save_to_csv
+from src.helpers.file_access import get_file_to_data_frame, FolderList, save_to_csv
 from src.normalize.action_enums import NormalizeActionEnum
 
 
 def normalize_dataset(
         file_in: str,
-        folder_file: FolderCache,
+        folder_file: FolderList,
         avoid_columns: list,
         action: NormalizeActionEnum = NormalizeActionEnum.DEFAULT,
 ) -> None:
