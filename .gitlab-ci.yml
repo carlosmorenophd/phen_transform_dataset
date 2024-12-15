@@ -10,13 +10,7 @@ develop_celery:
   only:
     - main
   script:
-    - ls
-    - if [ -f "/home/jcms/deploy/transform/.env" ]; then
-        cp "/path/to/your/file.txt" ".env"
-        echo "Archivo copiado exitosamente"
-      else
-        echo "El archivo no existe"
-      fi
+    - ls -la
     - docker compose -f compose.yaml down
     - docker compose -f compose.yaml build
     - docker compose -f compose.yaml up -d
