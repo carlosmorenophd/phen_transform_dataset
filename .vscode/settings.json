@@ -3,9 +3,16 @@
         "activityBar.background": "#e2e7f0",
     },
     "cSpell.ignoreWords": [
+        "ALLSKY",
+        "CLRSKY",
+        "MDEW",
+        "PRECTOTCORR",
+        "Rendimiento",
         "loglevel",
+        "lrace",
         "phen",
         "tasksdd",
+        "trueba",
         "watchmedo"
     ]
 }
