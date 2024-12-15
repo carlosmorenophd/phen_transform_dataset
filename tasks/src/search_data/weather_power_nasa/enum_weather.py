@@ -1,7 +1,14 @@
 """Get all data class and enum for weather"""
+import os
+import json
 from dataclasses import dataclass
 from enum import Enum
-import json
+
+
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 class FormatPowerApiEnum(Enum):
@@ -70,15 +77,16 @@ class ColumnsDefinition():
     end_date_column: str
 
 
-class UrlPowerAPIEnum(Enum):
+@dataclass
+class UrlPowerAPIEnum():
     """List of endpoint to get data from nasa power API
-
-    Args:
-        Enum (_type_): _description_
     """
-    HOURLY_URL = "https://power.larc.nasa.gov/api/temporal/hourly/point"
-    DAILY_URL = "https://power.larc.nasa.gov/api/temporal/dayly/point"
-    MONTHLY_URL = "https://power.larc.nasa.gov/api/temporal/monthly/point"
+    hourly_url: str = os.getenv(
+        'HOURLY_URL', "https://power.larc.nasa.gov/api/temporal/hourly/point")
+    daily_url: str = os.getenv(
+        'DAILY_URL', "https://power.larc.nasa.gov/api/temporal/dayly/point")
+    monthly_url: str = os.getenv(
+        'MONTHLY_URL', "https://power.larc.nasa.gov/api/temporal/monthly/point")
 
 
 def feature_power_to_text_spanish(param: FeaturesPowerApiEnum) -> str:
@@ -165,11 +173,11 @@ def url_power_enum_to_text(server: UrlPowerAPIEnum):
     Returns:
         _type_: _description_
     """
-    if server == UrlPowerAPIEnum.HOURLY_URL:
+    if server == UrlPowerAPIEnum.hourly_url:
         return "hourly"
-    if server == UrlPowerAPIEnum.DAILY_URL:
+    if server == UrlPowerAPIEnum.daily_url:
         return "daily"
-    if server == UrlPowerAPIEnum.MONTHLY_URL:
+    if server == UrlPowerAPIEnum.monthly_url:
         return "mouthy"
     raise NotImplementedError("Not valid server power enum")
 
@@ -258,11 +266,3 @@ def convert_string_to_feature_power(input_str) -> FeaturesPowerApiEnum:
         if feature.value == input_str:
             return feature.value
     raise NameError(f"Feature not valid {input_str}")
-
-# class CountryGPS():
-#     """Class with country and geo reference
-#     """
-#     def __init__(self, name: str, latitude: float, longitude: float) -> None:
-#         self.name = name
-#         self.latitude = latitude
-#         self.longitude = longitude

@@ -28,7 +28,7 @@ class WeatherExportDataFrame():
         action: TransformWeatherActionEnum,
     ) -> None:
         self.storage = StorageFile(file_information=file_information)
-        self.url = UrlPowerAPIEnum.DAILY_URL.value
+        self.url = UrlPowerAPIEnum.daily_url.value
         self.columns_definition = columns_definition
         self.features = features
         self.action = action

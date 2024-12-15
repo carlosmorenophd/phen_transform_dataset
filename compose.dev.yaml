@@ -6,6 +6,9 @@ services:
     environment:
       - REDIS_URL=${REDIS_URL}
       - FOLDER_DATA=${FOLDER_DATA}
+      - HOURLY_URL=${HOURLY_URL}
+      - DAILY_URL=${DAILY_URL}
+      - MONTHLY_URL=${MONTHLY_URL}
     networks:
       phen-net:
         aliases:
