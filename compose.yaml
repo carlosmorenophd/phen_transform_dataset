@@ -1,5 +1,6 @@
 services:
   tasks:
+    container_name: phen_transform
     build:
       context: tasks/
       dockerfile: Dockerfile

@@ -174,11 +174,10 @@ def task_search_data_power_hourly(
     """Get data climatic from power nasa server
 
     Args:
-        file_csv (str): file to get data
-        action_str (str): action to do ('all','mean','max','min')
-        altitude_column (str): altitude column on dataset
-        longitude_column (str): longitude column on dataset
-        latitude_column (str): latitude column on dataset
+        file_csv (str): file to work
+        action_str (str): _description_
+        columns_json_str (str): _description_
+        features_str_coma (str): _description_
     """
     print(f"Parameters :] file - {
         file_csv
