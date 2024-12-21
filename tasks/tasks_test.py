@@ -2,7 +2,14 @@
 import sys
 
 from celery.app import Celery
-from src.helpers.key_env import REDIS_BROKEN
+from src.helpers.key_env import REDIS_BROKEN, FileInformation
+
+from src.search_data.weather_power_nasa.enum_weather import (
+    convert_string_to_transform_weather_action,
+    convert_string_to_column_definition,
+    convert_string_to_feature_power_list,
+)
+from src.search_data.weather_power_nasa.search_power_api import WeatherExportDataFrame
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -130,4 +137,22 @@ if __name__ == "__main__":
 
     else:
         print("Only test")
+        action = convert_string_to_transform_weather_action(
+            action_str="all"
+        )
+        columns_definition = convert_string_to_column_definition(
+            column_definition_str='{"latitude_column": "Lat", "longitude_column": "Long", "start_date_column": "DateStart", "end_date_column": "DateEnd"  }'
+        )
+        features = convert_string_to_feature_power_list(
+            features_str='ALL_ALL')
+        file_information = FileInformation(_file_name="3.14_lrace_geo.csv")
+        print(f"columns definition {columns_definition}")
+        weather = WeatherExportDataFrame(
+            file_information=file_information,
+            columns_definition=columns_definition,
+            features=features,
+            action=action,
+        )
+        weather.fetching_wheat()
+        weather.save()
     print("end")

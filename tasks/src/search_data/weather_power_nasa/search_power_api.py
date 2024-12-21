@@ -69,7 +69,12 @@ class WeatherExportDataFrame():
                     "header": True,
                     "time-standard": 'lst',
                 }
-                response = session.get(url=self.url, params=params)
+                print(self.url)
+                response = session.get(
+                    url=self.url,
+                    params=params,
+                    headers={'accept': 'application/json'},
+                )
                 if response.status_code == 200:
                     result = response.json()["properties"]["parameter"]
                     avg = sum(result[param].values()) / \
