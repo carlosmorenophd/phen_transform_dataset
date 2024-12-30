@@ -186,10 +186,10 @@ def url_power_enum_to_text(server: str):
 class TransformWeatherActionEnum(Enum):
     """Action to transform weather"""
     ALL = "all"
-    NO_TRANSFORM = "no_transform"
     MEAN = "mean"
     MAX = "max"
     MINUS = "minus"
+    RANGE = "range"
 
 
 def convert_string_to_transform_weather_action(action_str) -> TransformWeatherActionEnum:

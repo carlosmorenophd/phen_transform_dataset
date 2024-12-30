@@ -29,13 +29,13 @@ class WeatherExportDataFrame():
     ) -> None:
         url_api = UrlPowerAPI()
         self.storage = StorageFile(file_information=file_information)
-        self.url = url_api.daily_url
+        self.url = url_api.hourly_url
         self.columns_definition = columns_definition
         self.features = features
         self.action = action
         self.df = self.storage.get_csv_to_data_frame()
 
-    def fetching_wheat(self):
+    def fetching_wheat_daily(self):
         """Get data from API
         """
         start_date_column = self.columns_definition["start_date_column"]
@@ -44,18 +44,18 @@ class WeatherExportDataFrame():
         longitude_column = self.columns_definition["longitude_column"]
         self.df["date_start"] = pd.to_datetime(
             self.df[start_date_column]
-        )
-        self.df["date_start"] = self.df["date_start"].dt.strftime('%Y%m%d')
-        self.df["date_end"] = pd.to_datetime(self.df[end_date_column])
-        self.df["date_end"] = self.df["date_end"].dt.strftime('%Y%m%d')
+        ).dt.strftime('%Y%m%d')
+        self.df["date_end"] = pd.to_datetime(
+            self.df[end_date_column]
+        ).dt.strftime('%Y%m%d')
         sqlite_file = self.storage.get_file_on_files_repository(
             folder=FolderList.TEMP,
             file_name='wheat_cache_sqlite'
         )
         session = requests_cache.CachedSession(sqlite_file)
-        for feature in self.features:
-            param = feature.value
-            self.df[param] = - 100.0
+        for parameter_weather in self.features:
+            feature = parameter_weather.value
+            self.df[feature] = - 100.0
             for index, row in self.df.iterrows():
                 params = {
                     "start": row["date_start"],
@@ -63,26 +63,87 @@ class WeatherExportDataFrame():
                     "latitude": row[latitude_column],
                     "longitude": row[longitude_column],
                     "community": CommunityPowerApiEnum.RE.value,
-                    "parameters": param,
+                    "parameters": feature,
                     "format": FormatPowerApiEnum.JSON.value,
                     "user": "cloud",
                     "header": True,
                     "time-standard": 'lst',
                 }
-                print(self.url)
                 response = session.get(
                     url=self.url,
                     params=params,
                     headers={'accept': 'application/json'},
                 )
                 if response.status_code == 200:
-                    result = response.json()["properties"]["parameter"]
-                    avg = sum(result[param].values()) / \
-                        float(len(result[param]))
-                    self.df.at[index, param] = avg
+                    result = response.json()[
+                        "properties"]["parameter"][feature]
+                    columns_date = pd.date_range(start=pd.to_datetime(
+                        row["date_start"]), end=pd.to_datetime(row["date_end"]))
+                    df_weather = pd.DataFrame(
+                        index=range(24), columns=columns_date)
+                    for key in result:
+                        time_index = int(key[-2:])
+                        day_column = pd.to_datetime(key[:8])
+                        df_weather.loc[time_index, day_column] = result[key]
+                    self.get_features(
+                        index=index,
+                        df_weather=df_weather,
+                        feature=feature,
+                    )
+                    print(
+                        f"Success feature -> {feature} of {
+                            index} - {len(self.df.iterrows())}"
+                    )
                 else:
-                    print(response.json())
-                time.sleep(5)
+                    print("Error on {self.url}, feature {param} -> {response}")
+                if not response.from_cache:
+                    print("Sleep to prevent error on Server... =(^-^)=")
+                    time.sleep(5)
+            self.save()
+
+    def get_features(self, index: int, df_weather: pd.DataFrame, feature: str) -> None:
+        if self.action == TransformWeatherActionEnum.ALL or self.action == TransformWeatherActionEnum.MEAN:
+            for column in df_weather.columns:
+                self.add_new_feature_cell_df(
+                    feature=feature,
+                    index=index,
+                    column=column,
+                    metric=TransformWeatherActionEnum.MEAN.value,
+                    value=df_weather[column].mean()
+                )
+        if self.action == TransformWeatherActionEnum.ALL or self.action == TransformWeatherActionEnum.MINUS:
+            for column in df_weather.columns:
+                self.add_new_feature_cell_df(
+                    feature=feature,
+                    index=index,
+                    column=column,
+                    metric=TransformWeatherActionEnum.MINUS.value,
+                    value=df_weather[column].min()
+                )
+        if self.action == TransformWeatherActionEnum.ALL or self.action == TransformWeatherActionEnum.MAX:
+            for column in df_weather.columns:
+                self.add_new_feature_cell_df(
+                    feature=feature,
+                    index=index,
+                    column=column,
+                    metric=TransformWeatherActionEnum.MAX.value,
+                    value=df_weather[column].max()
+                )
+        if self.action == TransformWeatherActionEnum.ALL or self.action == TransformWeatherActionEnum.RANGE:
+            for column in df_weather.columns:
+                self.add_new_feature_cell_df(
+                    feature=feature,
+                    index=index,
+                    column=column,
+                    metric=TransformWeatherActionEnum.RANGE.value,
+                    value=df_weather[column].max() - df_weather[column].min()
+                )
+
+    def add_new_feature_cell_df(self, index: int, feature: str, column: str, metric: str, value: float):
+        self.df.at[
+            index,
+            f"{feature}_{metric}_{column}",
+        ] = value
 
     def save(self):
         """Save file
