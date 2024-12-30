@@ -205,7 +205,7 @@ def task_search_data_power_hourly(
         features=features,
         action=action,
     )
-    weather.fetching_wheat()
+    weather.fetching_wheat_daily()
     weather.save()
     del weather
     gc.collect()
