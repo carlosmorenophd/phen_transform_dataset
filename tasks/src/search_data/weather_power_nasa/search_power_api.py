@@ -92,7 +92,7 @@ class WeatherExportDataFrame():
                     )
                     print(
                         f"Success feature -> {feature} of {
-                            index} - {len(self.df.iterrows())}"
+                            index} - {len(self.df.shape[0])}"
                     )
                 else:
                     print("Error on {self.url}, feature {param} -> {response}")
