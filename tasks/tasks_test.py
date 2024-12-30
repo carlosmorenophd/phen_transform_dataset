@@ -129,4 +129,3 @@ if __name__ == "__main__":
         weather.fetching_wheat_daily()
         weather.save()
     print("end")
-g
