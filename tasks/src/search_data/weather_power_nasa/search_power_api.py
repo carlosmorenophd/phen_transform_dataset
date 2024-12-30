@@ -29,7 +29,7 @@ class WeatherExportDataFrame():
     ) -> None:
         url_api = UrlPowerAPI()
         self.storage = StorageFile(file_information=file_information)
-        self.url = url_api.daily_url
+        self.url = url_api.hourly_url
         self.columns_definition = columns_definition
         self.features = features
         self.action = action

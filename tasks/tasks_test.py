@@ -61,14 +61,7 @@ if __name__ == "__main__":
         elif action == "feature_selection-correlation":
             print("Run - feature_selection-correlation")
             print(
-                f"file -> {
-                    sys.argv[2]
-                }, threshold -> {
-                    sys.argv[3]
-                }, create_heatmap -> {
-                    sys.argv[4]
-                }"
-            )
+                f"file -> {sys.argv[2]}, threshold -> {sys.argv[3]}, create_heatmap -> {sys.argv[4]}")
             app.send_task(
                 name="feature_selection-correlation",
                 args=(
@@ -79,11 +72,7 @@ if __name__ == "__main__":
             )
         elif action == "missing_fill-average":
             print("Run - missing_fill-average")
-            print(
-                f"file -> {
-                    sys.argv[2]
-                }"
-            )
+            print(f"file -> {sys.argv[2]}")
             app.send_task(
                 name="missing_fill-average",
                 args=(
@@ -93,14 +82,7 @@ if __name__ == "__main__":
         elif action == "normalize_dataset":
             print("Run - normalize_dataset")
             print(
-                f"file -> {
-                    sys.argv[2]
-                } action -> {
-                    sys.argv[3]
-                } avoid columns - {
-                    sys.argv[4]
-                }"
-            )
+                f"file -> {sys.argv[2]} action -> {sys.argv[3]} avoid columns - {sys.argv[4]}")
             app.send_task(
                 routing_key="high_priority",
                 name="normalize_dataset",
@@ -113,16 +95,7 @@ if __name__ == "__main__":
         elif action == "search_data_power_hourly":
             print("Run - search_data_power_hourly")
             print(
-                f"file -> {
-                    sys.argv[2]
-                } action -> {
-                    sys.argv[3]
-                } columns - {
-                    sys.argv[4]
-                } features -> {
-                    sys.argv[5]
-                }"
-            )
+                f"file -> {sys.argv[2]} action -> {sys.argv[3]} columns - {sys.argv[4]} features -> {sys.argv[5]}")
             app.send_task(
                 name="search_data_power_hourly",
                 args=(
