@@ -90,12 +90,9 @@ class WeatherExportDataFrame():
                         df_weather=df_weather,
                         feature=feature,
                     )
-                    print(
-                        f"Success feature -> {feature} of {
-                            index} - {self.df.shape[0]}"
-                    )
+                    print(f"Success feature -> {feature} of {index} - {self.df.shape[0]}")
                 else:
-                    print("Error on {self.url}, feature {param} -> {response}")
+                    print(f"Error on {self.url}, feature {feature} -> {response}")
                 if not response.from_cache:
                     print("Sleep to prevent error on Server... =(^-^)=")
                     time.sleep(5)
